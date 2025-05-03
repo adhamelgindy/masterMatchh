@@ -50,7 +50,6 @@ async function extractTextFromPdf(file) {
       { name: file.name, password: '', pages: '', url: uploadedFileUrl },
       { headers: { 'x-api-key': apiKey, 'Content-Type': 'application/json' } }
     );
-    S
     const textFileUrl = extractResponse.data.url;
     const textFileResponse = await axios.get(textFileUrl);
     return textFileResponse.data;
