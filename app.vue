@@ -30,34 +30,34 @@ function resetAnalysis() {
 }
 
 async function extractTextFromPdf(file) {
-  return pdfText; // For testing purposes, we are using the static text from the imported module
+  // return pdfText; // For testing purposes, we are using the static text from the imported module
 
-  //    const apiKey = import.meta.env.VITE_PDF_ANALYZER_API_KEY
+  const apiKey = import.meta.env.VITE_PDF_ANALYZER_API_KEY
 
-  //   try {
-  //     const getUrlResponse = await axios.get(
-  //       `https://api.pdf.co/v1/file/upload/get-presigned-url?name=${encodeURIComponent(file.name)}&contenttype=application/octet-stream`,
-  //       { headers: { 'x-api-key': apiKey } }
-  //     );
-  //     const { presignedUrl, url: uploadedFileUrl } = getUrlResponse.data;
+  try {
+    const getUrlResponse = await axios.get(
+      `https://api.pdf.co/v1/file/upload/get-presigned-url?name=${encodeURIComponent(file.name)}&contenttype=application/octet-stream`,
+      { headers: { 'x-api-key': apiKey } }
+    );
+    const { presignedUrl, url: uploadedFileUrl } = getUrlResponse.data;
 
-  //     await axios.put(presignedUrl, file, {
-  //       headers: { 'Content-Type': 'application/octet-stream' }
-  //     });
+    await axios.put(presignedUrl, file, {
+      headers: { 'Content-Type': 'application/octet-stream' }
+    });
 
-  //     const extractResponse = await axios.post(
-  //       'https://api.pdf.co/v1/pdf/convert/to/text',
-  //       { name: file.name, password: '', pages: '', url: uploadedFileUrl },
-  //       { headers: { 'x-api-key': apiKey, 'Content-Type': 'application/json' } }
-  //     );
-  // S
-  //     const textFileUrl = extractResponse.data.url;
-  //     const textFileResponse = await axios.get(textFileUrl);
-  //     return textFileResponse.data;
-  //   } catch (err) {
-  //     console.error('PDF Extraction Error:', err.response ? err.response.data : err.message);
-  //     throw new Error('Failed to process PDF.');
-  //   }
+    const extractResponse = await axios.post(
+      'https://api.pdf.co/v1/pdf/convert/to/text',
+      { name: file.name, password: '', pages: '', url: uploadedFileUrl },
+      { headers: { 'x-api-key': apiKey, 'Content-Type': 'application/json' } }
+    );
+    S
+    const textFileUrl = extractResponse.data.url;
+    const textFileResponse = await axios.get(textFileUrl);
+    return textFileResponse.data;
+  } catch (err) {
+    console.error('PDF Extraction Error:', err.response ? err.response.data : err.message);
+    throw new Error('Failed to process PDF.');
+  }
 }
 
 async function submitPdf() {
