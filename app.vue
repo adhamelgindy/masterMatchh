@@ -17,6 +17,7 @@ const masterCourses = {
 };
 
 const openaiApiKey = import.meta.env.VITE_OPENAI_API_KEY; // Use environment variable for OpenAI key
+console.log('OpenAI API Key:', openaiApiKey); // For debugging purposes 
 
 function handleFileUpload(event) {
   pdfFile.value = event.target.files[0];
