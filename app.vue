@@ -31,6 +31,7 @@ function resetAnalysis() {
 }
 
 async function extractTextFromPdf(file) {
+  console.log('Extracting text from PDF:', file.name); // For debugging purposes
   // return pdfText; // For testing purposes, we are using the static text from the imported module
 
   const apiKey = import.meta.env.VITE_PDF_ANALYZER_API_KEY
