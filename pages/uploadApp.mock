@@ -1,0 +1,137 @@
+
+<template>
+    <div>
+      <h2>Upload Your Course Notes (PDF)</h2>
+      <input type="file" @change="handleFileUpload" accept="application/pdf" />
+      <button @click="submitPdf" :disabled="!pdfFile">Upload & Analyze</button>
+      
+      <h3>Select Your Desired Master's Program</h3>
+      <select v-model="selectedCourse" @change="resetAnalysis">
+        <option disabled value="">Select a course</option>
+        <option value="Berufs- und Technikpädagogik (M.A.) 210KP">Berufs- und Technikpädagogik (M.A.) 210KP</option>
+        <option value="Wirtschaftsingenieurwesen/Bautechnik und -management">Wirtschaftsingenieurwesen/Bautechnik und -management</option>
+        <option value="Wirtschaftsingenieurwesen/Maschinenbau">Wirtschaftsingenieurwesen/Maschinenbau</option>
+        <option value="Wirtschaftsingenieurwesen/Projektmanagement">Wirtschaftsingenieurwesen/Projektmanagement</option>
+      </select>
+      
+      <p v-if="analysis">{{ analysis }}</p>
+    </div>
+  </template>
+  
+  <script setup>
+  import { ref } from 'vue'
+  import axios from 'axios'
+  
+  // State variables
+  const pdfFile = ref(null)
+  const analysis = ref('')
+  const selectedCourse = ref('')
+  
+  // Fake master course data
+  const masterCourses = {
+    "Berufs- und Technikpädagogik (M.A.) 210KP": [
+      'Educational Pedagogy',
+      'Technological Instruction',
+      'Curriculum Design'
+    ],
+    "Wirtschaftsingenieurwesen/Bautechnik und -management": [
+      'Construction Management',
+      'Building Materials',
+      'Structural Engineering'
+    ],
+    "Wirtschaftsingenieurwesen/Maschinenbau": [
+      'Mechanical Design',
+      'Thermodynamics',
+      'Fluid Mechanics'
+    ],
+    "Wirtschaftsingenieurwesen/Projektmanagement": [
+      'Project Planning',
+      'Risk Management',
+      'Project Execution'
+    ]
+  }
+  
+  // Handle file upload
+  function handleFileUpload(event) {
+    pdfFile.value = event.target.files[0]
+  }
+  
+  // Reset analysis when selecting another course
+  function resetAnalysis() {
+    analysis.value = ''
+  }
+  
+  // Extract text from PDF
+  async function extractTextFromPdf(file) {
+    const reader = new FileReader()
+  
+    return new Promise((resolve, reject) => {
+      reader.onload = async (e) => {
+        try {
+          const typedarray = new Uint8Array(e.target.result)
+  
+          const pdfjsLib = await import('pdfjs-dist/build/pdf')
+          pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`
+  
+          const pdf = await pdfjsLib.getDocument({ data: typedarray }).promise
+          let text = ''
+  
+          for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+            const page = await pdf.getPage(pageNum)
+            const content = await page.getTextContent()
+            text += content.items.map(item => item.str).join(' ')
+          }
+  
+          resolve(text)
+        } catch (error) {
+          reject(error)
+        }
+      }
+  
+      reader.onerror = (error) => reject(error)
+  
+      reader.readAsArrayBuffer(file)
+    })
+  }
+  
+  
+  // Submit PDF to OpenAI for analysis
+  async function submitPdf() {
+    if (!selectedCourse.value) {
+      analysis.value = 'Please select a master course.'
+      return
+    }
+  
+    try {
+      const text = await extractTextFromPdf(pdfFile.value)
+  
+      const prompt = `
+  You are an academic advisor. A student provided the following content from their previous courses:
+  
+  "${text}"
+  
+  Compare it with the following master's program requirements for "${selectedCourse.value}" and determine which requirements they meet and what they are missing:
+  
+  ${JSON.stringify(masterCourses[selectedCourse.value], null, 2)}
+  
+  Provide a detailed response for the student.
+      `
+  
+      const response = await axios.post('https://api.openai.com/v1/chat/completions', {
+        model: 'gpt-3.5-turbo',
+        messages: [{ role: 'user', content: prompt }],
+      }, {
+        headers: {
+          'Authorization': 
+          'Content-Type': 'application/json',
+        }
+      })
+  
+      analysis.value = response.data.choices[0].message.content
+    } catch (err) {
+      console.error(err)
+      analysis.value = 'There was an error processing the PDF.'
+    }
+  }
+  </script>
+  
