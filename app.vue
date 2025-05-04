@@ -152,7 +152,7 @@ async function sendMessage() {
 <template>
   <div
     style="max-width: 600px; margin: 50px auto; padding: 30px; border-radius: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); background: linear-gradient(135deg, #f9f9f9, #e0e0e0); font-family: 'Arial', sans-serif; text-align: center;">
-    <h2 style="margin-bottom: 20px; color: #333;">Upload Your Course Notes (PDF)</h2>
+    <h2 style="margin-bottom: 20px; color: #333;">A7A: Upload Your Course Notes (PDF)</h2>
 
     <input type="file" @change="handleFileUpload" accept="application/pdf"
       style="margin-bottom: 20px; padding: 10px; border: 1px solid #ccc; border-radius: 8px; width: 100%; background-color: #fff;" />
