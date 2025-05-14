@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import axios from 'axios';
-import { projectManagementRequirements, module, pdfText } from './requirements/Wirtschaftsingenieurwesen_Projektmanagement.js';
+import { module, pdfText, zulassungsdaten } from './requirements/Wirtschaftsingenieurwesen_Projektmanagement.js';
 
 const pdfFile = ref(null);
 const analysis = ref('');
@@ -23,6 +23,8 @@ function handleFileUpload(event) {
   pdfFile.value = event.target.files[0];
 }
 
+// const bachelorCredits = ref(0);
+
 function resetAnalysis() {
   analysis.value = '';
   error.value = '';
@@ -31,6 +33,7 @@ function resetAnalysis() {
 }
 
 async function extractTextFromPdf(file) {
+  // return pdfText;
   
   console.log('Extracting text from PDF:', file.name); // For debugging purposes
   // return pdfText; // For testing purposes, we are using the static text from the imported module
@@ -78,18 +81,43 @@ async function submitPdf() {
 
   try {
     const text = await extractTextFromPdf(pdfFile.value);
+    console.log('text:', text); // For debugging purposes
 
     const prompt = `
-      You are an academic advisor. A student provided the following course content:
+You are an academic advisor. A student has submitted the following bachelor course content:
 
-      "${text}".
+"${text}"
 
-      Those are the requirements for the course "${selectedCourse.value}":
+The student wishes to apply for the master course: "${selectedCourse.value}".
 
-      "${projectManagementRequirements}".
+Here are the admission requirements for all available master courses:
+"${zulassungsdaten}"
 
-      Compare them. start by how many credit points the student is missing, and at the end recommend modules from "${module}" to help them decide which courses to take, and say next to each course if it is Ingenieurwissenschaften, Betriebswirtschaften, or Bautechnisch.
-    `;
+Please analyze and compare the student's bachelor content with the requirements of the selected master course.
+
+Your response should be structured in the following way:
+
+1. Total Credit Points: 
+   - First, calculate and output the **total number of credit points** from the student's provided course content, starting from 210 up to 240 CPs. 
+   - If exact credit points are not mentioned, output the sum of all total credit points from each module.
+#
+2. Master Course Requirements: 
+   - Clearly list the required credit points and subject distribution for "${selectedCourse.value}" from the provided admission requirements.
+
+3. Gap Analysis: 
+   - State how many credit points are missing (if any) and in which areas or subjects.
+
+4. Course Recommendations: 
+   - Recommend modules from the following list to help the student fulfill the missing credits:
+     "${module}"
+   - Next to each recommended module, indicate whether it belongs to:
+     - Ingenieurwissenschaften
+     - Betriebswirtschaften
+     - Bautechnisch
+
+Please be clear, structured, and helpful in your answer so the student knows exactly what to do next.
+`;
+
 
     const response = await axios.post(
       'https://api.openai.com/v1/chat/completions',
@@ -158,6 +186,14 @@ async function sendMessage() {
 
     <input type="file" @change="handleFileUpload" accept="application/pdf"
       style="margin-bottom: 20px; padding: 10px; border: 1px solid #ccc; border-radius: 8px; width: 100%; background-color: #fff;" />
+
+      <!-- <h3 style="margin-bottom: 15px; color: #333;">How many Credit points did you have from your Bachelor</h3>
+      <input
+  type="number"
+  v-model.number="bachelorCredits"
+  placeholder="Enter Bachelor Credits"
+  style="margin-bottom: 20px; padding: 10px; border: 1px solid #ccc; border-radius: 8px; width: 100%; background-color: #fff;"
+/> -->
 
     <h3 style="margin-bottom: 15px; color: #333;">Select Your Desired Master's Program</h3>
 
