@@ -98,8 +98,8 @@ Please analyze and compare the student's bachelor content with the requirements 
 Your response should be structured in the following way:
 
 1. Total Credit Points: 
-   - First, calculate and output the **total number of credit points** from the student's provided course content, starting from 210 up to 240 CPs. 
-   - If exact credit points are not mentioned, output the sum of all total credit points from each module.
+   - First, calculate and output the **total number of credit points** from the student's provided course content, it has to be from 180 up to 240 CPs. 
+   - If exact credit points are not mentioned, it has to be 180 or above, up to 240 CPs.
 #
 2. Master Course Requirements: 
    - Clearly list the required credit points and subject distribution for "${selectedCourse.value}" from the provided admission requirements.
