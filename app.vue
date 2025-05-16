@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import axios from 'axios';
-import { module, zulassungsdaten } from './requirements/Wirtschaftsingenieurwesen_Projektmanagement.js';
+import { module, zulassungsdaten, Studiengange  } from './requirements/Wirtschaftsingenieurwesen_Projektmanagement.js';
 
 const pdfFile = ref(null);
 const analysis = ref('');
@@ -15,11 +15,13 @@ const step = ref(1); // 1: Upload PDF, 2: Select Master + Credits, 3: Show Resul
 const bachelorCredits = ref(0);
 const hasTotalCredits = ref(false); // Initialize as false
 const pdfText = ref('');
+const selectedCity = ref('');
 
 
-const masterCourses = {
-  // Add your master courses object here if needed
-};
+
+// const masterCourses = {
+//   // Add your master courses object here if needed
+// };
 
 const openaiApiKey = import.meta.env.VITE_OPENAI_API_KEY;
 
@@ -84,6 +86,11 @@ async function submitMasterAndCredits() {
     return;
   }
 
+if (!selectedCity.value) {
+  error.value = 'Please select the city where you completed your bachelor’s degree.';
+  loading.value = false;
+  return;
+}
   loading.value = true;
   error.value = '';
 
@@ -117,7 +124,7 @@ async function analyzeRequirements(text) {
     text += `\n\nTotal Credit Points: ${bachelorCredits.value}`;
   }
 
-  const prompt = `
+    const prompt = `
 You are an academic advisor. A student has submitted the following bachelor course content:
 
 "${text}"
@@ -139,9 +146,6 @@ Your response should be structured in the following way:
 2. Master Course Requirements: 
    - Clearly list the required credit points and subject distribution for "${selectedCourse.value}"
 
-3. Gap Analysis: 
-   - State how many credit points are missing (if any) and in which areas
-
 4. Course Recommendations: 
    - Recommend modules from this list to fulfill missing credits:
      "${module}"
@@ -152,6 +156,7 @@ Your response should be structured in the following way:
 
 Please provide clear, structured advice.
 `;
+
 
   const response = await axios.post(
     'https://api.openai.com/v1/chat/completions',
@@ -211,111 +216,250 @@ function resetAnalysis() {
 </script>
 
 <template>
-  <div style="max-width: 600px; margin: 50px auto; padding: 30px; border-radius: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); background: linear-gradient(135deg, #f9f9f9, #e0e0e0); font-family: 'Arial', sans-serif; text-align: center;">
+  <div style="max-width: 600px; margin: 50px auto; padding: 30px; border-radius: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); background: linear-gradient(135deg, #f0f8ff, #e6f2ff); font-family: 'Segoe UI', Arial, sans-serif; text-align: center;">
+    <img src="/logoMM.png" alt="logo" style="width: 10rem; margin-bottom: 20px; border-radius: 10%;" />
+    <!-- Header -->
+    <div style="margin-bottom: 25px;">
+      <h1 style="color: #2c5282; font-size: 24px; margin-bottom: 5px;">Course Credit Analysis Tool</h1>
+      <p style="color: #4a5568; font-size: 14px; margin-top: 0;">Discover Your Master's Program Eligibility</p>
+    </div>
     
+    <!-- Progress Bar -->
+    <div style="margin-bottom: 30px; position: relative;">
+      <div style="height: 6px; background-color: #cbd5e0; border-radius: 3px; width: 100%;">
+        <div :style="`width: ${(step/3)*100}%; height: 6px; background: linear-gradient(90deg, #3182ce, #63b3ed); border-radius: 3px; transition: width 0.5s ease;`"></div>
+      </div>
+      <div style="display: flex; justify-content: space-between; margin-top: 8px;">
+        <span style="color: #4a5568; font-size: 12px;">Upload</span>
+        <span style="color: #4a5568; font-size: 12px;">Program</span>
+        <span style="color: #4a5568; font-size: 12px;">Results</span>
+      </div>
+    </div>
+
     <!-- Step 1: PDF Upload -->
-    <div v-if="step === 1">
-      <h2 style="margin-bottom: 20px; color: #333;">Upload Your Course Notes (PDF)</h2>
-      <input type="file" @change="handleFileUpload" accept="application/pdf" :disabled="loading"
-        style="margin-bottom: 20px; padding: 10px; border: 1px solid #ccc; border-radius: 8px; width: 100%; background-color: #fff;" />
+    <div v-if="step === 1" style="transition: all 0.3s ease;">
+      <div style="background-color: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+        <div style="margin-bottom: 20px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#3182ce" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="12" y1="18" x2="12" y2="12"></line>
+            <line x1="9" y1="15" x2="15" y2="15"></line>
+          </svg>
+        </div>
+        <h2 style="margin-bottom: 15px; color: #2c5282; font-size: 18px;">Upload Your Course Notes</h2>
+        
+        <label for="fileUpload" style="display: block; cursor: pointer; padding: 15px; background: linear-gradient(135deg, #ebf4ff, #bee3f8); border: 1px dashed #3182ce; border-radius: 8px; transition: all 0.3s ease;">
+          <span style="color: #2b6cb0; font-weight: 500;">Click to upload PDF here</span>
+          <input id="fileUpload" type="file" @change="handleFileUpload" accept="application/pdf" :disabled="loading"
+            style="opacity: 0; position: absolute; z-index: -1;" />
+        </label>
+      </div>
     </div>
 
     <!-- Loading Spinner -->
     <div v-if="loading" style="margin-top: 20px;">
-      <div class="spinner"></div>
-      <p style="margin-top: 10px; color: #555;">Uploading and processing PDF...</p>
+      <div style="border: 3px solid #ebf8ff; border-top: 3px solid #3182ce; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 0 auto;"></div>
+      <p style="margin-top: 10px; color: #4a5568; font-size: 14px;">Processing your document...</p>
     </div>
 
-
     <!-- Step 2: Master Selection and Credits Input -->
-    <div v-if="step === 2">
-      <h2 style="margin-bottom: 20px; color: #333;">Select Your Desired Master's Program</h2>
+    <div v-if="step === 2" style="transition: all 0.3s ease;">
+      <div style="background-color: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+        <div style="margin-bottom: 20px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#3182ce" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+            <line x1="12" y1="11" x2="12" y2="17"></line>
+            <line x1="9" y1="14" x2="15" y2="14"></line>
+          </svg>
+        </div>
+        <h2 style="margin-bottom: 15px; color: #2c5282; font-size: 18px;">Select Your Desired Master's Program</h2>
+        
+        <div style="margin-bottom: 20px; text-align: left;">
+          <label style="display: block; margin-bottom: 8px; color: #4a5568; font-size: 14px; font-weight: 500;">Program:</label>
+          <div style="position: relative;">
+            <select v-model="selectedCourse"
+              style="display: block; width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; background-color: #fff; color: #2d3748; font-size: 14px; appearance: none; outline: none; transition: border-color 0.2s ease;">
+              <option disabled value="">Select a Master's program</option>
+              <option value="Berufs- und Technikpädagogik (M.A.) 210KP">Berufs- und Technikpädagogik (M.A.) 210KP</option>
+              <option value="Wirtschaftsingenieurwesen/Bautechnik und -management">Wirtschaftsingenieurwesen/Bautechnik und -management</option>
+              <option value="Wirtschaftsingenieurwesen/Maschinenbau">Wirtschaftsingenieurwesen/Maschinenbau</option>
+              <option value="Wirtschaftsingenieurwesen/Projektmanagement">Wirtschaftsingenieurwesen/Projektmanagement</option>
+            </select>
+            <div style="position: absolute; right: 12px; top: 14px; pointer-events: none;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4a5568" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
+          </div>
+        </div>
 
-      <select v-model="selectedCourse"
-        style="margin-bottom: 20px; padding: 10px; border: 1px solid #ccc; border-radius: 8px; width: 100%; background-color: #fff;">
-        <option disabled value="">Select a course</option>
-        <option value="Berufs- und Technikpädagogik (M.A.) 210KP">Berufs- und Technikpädagogik (M.A.) 210KP</option>
-        <option value="Wirtschaftsingenieurwesen/Bautechnik und -management">Wirtschaftsingenieurwesen/Bautechnik und -management</option>
-        <option value="Wirtschaftsingenieurwesen/Maschinenbau">Wirtschaftsingenieurwesen/Maschinenbau</option>
-        <option value="Wirtschaftsingenieurwesen/Projektmanagement">Wirtschaftsingenieurwesen/Projektmanagement</option>
-      </select>
+        <!-- Select German City of Bachelor Degree -->
+<div style="margin-bottom: 20px; text-align: left;">
+  <label for="city" style="display: block; margin-bottom: 5px; color: #2c5282; font-weight: 500;">German City of Your Bachelor's Degree</label>
+  <select id="city" v-model="selectedCity" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #cbd5e0;">
+    <option value="" disabled>Select a city</option>
+    <option>Berlin</option>
+    <option>Hamburg</option>
+    <option>Munich</option>
+    <option>Frankfurt</option>
+    <option>Cologne</option>
+    <option>Stuttgart</option>
+    <option>Dresden</option>
+    <option>Leipzig</option>
+    <option>Hannover</option>
+    <option>Düsseldorf</option>
+    <!-- Add more as needed -->
+  </select>
+</div>
 
-      <!-- Only show credits input if hasTotalCredits is false -->
-      <div v-if="!hasTotalCredits">
-        <h3 style="margin-bottom: 15px; color: #333;">Enter Your Total Bachelor Credits</h3>
-        <input
-          type="number"
-          v-model.number="bachelorCredits"
-          placeholder="Enter Bachelor Credits (180-240)"
-          min="180"
-          max="240"
-          style="margin-bottom: 20px; padding: 10px; border: 1px solid #ccc; border-radius: 8px; width: 100%; background-color: #fff;"
-        />
+
+        <!-- Only show credits input if hasTotalCredits is false -->
+        <div v-if="!hasTotalCredits" style="margin-bottom: 20px; text-align: left;">
+          <label style="display: block; margin-bottom: 8px; color: #4a5568; font-size: 14px; font-weight: 500;">Your Bachelor Credits:</label>
+          <input
+            type="number"
+            v-model.number="bachelorCredits"
+            placeholder="Enter Bachelor Credits (180-240)"
+            min="180"
+            max="240"
+            style="display: block; width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; background-color: #fff; color: #2d3748; font-size: 14px; outline: none; transition: border-color 0.2s ease;"
+          />
+        </div>
+
+        <button @click="submitMasterAndCredits" :disabled="loading || !selectedCourse"
+          style="width: 100%; padding: 12px; background: linear-gradient(135deg, #3182ce, #63b3ed); border: none; border-radius: 8px; color: white; font-size: 16px; font-weight: 500; cursor: pointer; transition: all 0.3s ease; display: flex; justify-content: center; align-items: center;">
+          <span>Continue to Analysis</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 8px;">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </button>
       </div>
-
-      <button @click="submitMasterAndCredits" :disabled="loading"
-        style="margin-bottom: 30px; padding: 12px 25px; background: linear-gradient(135deg, #4caf50, #81c784); border: none; border-radius: 25px; color: white; font-size: 16px; cursor: pointer; transition: background 0.3s;">
-        {{ loading ? 'Processing...' : 'Continue to Analysis' }}
-      </button>
     </div>
 
     <!-- Step 3: Results Display -->
-    <div v-if="step === 3">
-      <div v-if="loading" style="margin-top: 20px;">
-        <div style="border: 4px solid #f3f3f3; border-top: 4px solid #4caf50; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 0 auto;"></div>
-      </div>
+    <div v-if="step === 3" style="transition: all 0.3s ease;">
+      <div style="background-color: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+        <div v-if="!analysis && loading" style="margin: 30px 0;">
+          <div style="border: 3px solid #ebf8ff; border-top: 3px solid #3182ce; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto;"></div>
+          <p style="margin-top: 15px; color: #4a5568;">Analyzing your eligibility...</p>
+        </div>
 
-      <div v-if="analysis" style="text-align: left; background: #fff; padding: 20px; border-radius: 10px; margin-top: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); color: #333;">
-        <strong>Analysis Result:</strong>
-        <p style="white-space: pre-wrap;">{{ analysis }}</p>
-
-        <div v-if="chatActive" style="margin-top: 20px;">
-          <h3>Ask Follow-up Questions 📚</h3>
-          <div v-for="(msg, index) in chatHistory" :key="index"
-            style="background-color: #f0f0f0; padding: 10px; border-radius: 10px; margin-bottom: 10px;">
-            <strong v-if="msg.role === 'user'">You:</strong>
-            <strong v-else>Advisor:</strong>
-            {{ msg.content }}
+        <div v-if="analysis" style="text-align: left;">
+          <div style="display: flex; align-items: center; margin-bottom: 20px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3182ce" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 10px;">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            <h2 style="color: #2c5282; font-size: 18px; margin: 0;">Analysis Results</h2>
+          </div>
+          
+          <div style="background-color: #ebf8ff; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #3182ce;">
+            <h3 style="color: #2b6cb0; font-size: 16px; margin-top: 0; margin-bottom: 10px;">Selected Program</h3>
+            <p style="color: #4a5568; margin: 0;">{{ selectedCourse }}</p>
+          </div>
+          
+          <div style="background-color: #f7fafc; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+            <h3 style="color: #2c5282; font-size: 16px; margin-top: 0; margin-bottom: 10px;">Eligibility Assessment</h3>
+            <p style="color: #4a5568; white-space: pre-wrap; margin: 0; line-height: 1.6;">{{ analysis }}</p>
           </div>
 
-          <input v-model="userMessage" @keyup.enter="sendMessage" placeholder="Type your question here..."
-            style="width: 100%; padding: 10px; margin-top: 10px; border-radius: 10px; border: 1px solid #ccc;" />
-          <button @click="sendMessage"
-            style="margin-top: 10px; padding: 10px 20px; border-radius: 10px; background-color: #4caf50; color: white; border: none;">Send</button>
+          <div v-if="chatActive" style="margin-top: 30px;">
+            <div style="display: flex; align-items: center; margin-bottom: 15px;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3182ce" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+              </svg>
+              <h3 style="color: #2c5282; font-size: 16px; margin: 0;">Ask Follow-up Questions</h3>
+            </div>
+            
+            <div style="max-height: 300px; overflow-y: auto; margin-bottom: 15px; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px;">
+              <div v-for="(msg, index) in chatHistory" :key="index"
+                style="padding: 10px; border-radius: 8px; margin-bottom: 10px;"
+                :style="msg.role === 'user' ? 'background-color: #ebf8ff; text-align: right;' : 'background-color: #f7fafc; text-align: left;'">
+                <p style="margin: 0; color: #4a5568; font-size: 14px;">
+                  <strong style="color: #2c5282;">{{ msg.role === 'user' ? 'You' : 'Advisor' }}:</strong>
+                  {{ msg.content }}
+                </p>
+              </div>
+            </div>
+
+            <div style="display: flex; align-items: center;">
+              <input v-model="userMessage" @keyup.enter="sendMessage" placeholder="Type your question here..."
+                style="flex: 1; padding: 12px; border-radius: 8px 0 0 8px; border: 1px solid #e2e8f0; outline: none;" />
+              <button @click="sendMessage"
+                style="padding: 12px 15px; border-radius: 0 8px 8px 0; background-color: #3182ce; color: white; border: none; cursor: pointer;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="22" y1="2" x2="11" y2="13"></line>
+                  <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
-    <p v-if="error" style="color: red; margin-top: 20px;">⚠️ {{ error }}</p>
+    <p v-if="error" style="color: #e53e3e; margin-top: 15px; background-color: #fff5f5; padding: 10px; border-radius: 8px; font-size: 14px;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: -2px; margin-right: 5px;">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="12"></line>
+        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+      </svg>
+      {{ error }}
+    </p>
   </div>
 </template>
 
-<style scoped>
+<style>
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
-</style>
 
-<style scoped>
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  100% {
-    transform: rotate(360deg);
-  }
+/* Adding subtle animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-.spinner {
-  border: 4px solid #f3f3f3;
-  border-top: 4px solid #4caf50;
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  animation: spin 1s linear infinite;
-  margin: 0 auto;
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+div[v-if="step === 1"], 
+div[v-if="step === 2"], 
+div[v-if="step === 3"] {
+  animation: fadeIn 0.5s ease-out;
+}
+
+select:hover, input:hover {
+  border-color: #90cdf4 !important;
+}
+
+select:focus, input:focus {
+  border-color: #3182ce !important;
+  box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.2);
+}
+
+button:hover {
+  background: linear-gradient(135deg, #2b6cb0, #4299e1) !important;
+  transform: translateY(-1px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+label:hover {
+  background: linear-gradient(135deg, #e6f7ff, #bfdbfe) !important;
+  border-color: #4299e1 !important;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 @keyframes spin {
