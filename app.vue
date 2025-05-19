@@ -1,7 +1,8 @@
 <script setup>
 import { ref } from 'vue';
 import axios from 'axios';
-import { module, zulassungsdaten, Studiengange  } from './requirements/Wirtschaftsingenieurwesen_Projektmanagement.js';
+import { module, zulassungsdaten, Studiengange, pdfText as myBachelorNote  } from './requirements/Wirtschaftsingenieurwesen_Projektmanagement.js';
+import emailjs from '@emailjs/browser';
 
 const pdfFile = ref(null);
 const analysis = ref('');
@@ -16,12 +17,11 @@ const bachelorCredits = ref(0);
 const hasTotalCredits = ref(false); // Initialize as false
 const pdfText = ref('');
 const selectedCity = ref('');
+const userEmail = ref('');
+const emailSent = ref(false);
+const emailLoading = ref(false);
 
 
-
-// const masterCourses = {
-//   // Add your master courses object here if needed
-// };
 
 const openaiApiKey = import.meta.env.VITE_OPENAI_API_KEY;
 
@@ -52,32 +52,33 @@ async function handleFileUpload(event) {
 
 async function extractTextFromPdf(file) {
   console.log('Extracting text from PDF:', file.name);
+  return myBachelorNote;
   
-  const apiKey = import.meta.env.VITE_PDF_ANALYZER_API_KEY;
+  // const apiKey = import.meta.env.VITE_PDF_ANALYZER_API_KEY;
   
-  try {
-    const getUrlResponse = await axios.get(
-      `https://api.pdf.co/v1/file/upload/get-presigned-url?name=${encodeURIComponent(file.name)}&contenttype=application/octet-stream`,
-      { headers: { 'x-api-key': apiKey } }
-    );
-    const { presignedUrl, url: uploadedFileUrl } = getUrlResponse.data;
+  // try {
+  //   const getUrlResponse = await axios.get(
+  //     `https://api.pdf.co/v1/file/upload/get-presigned-url?name=${encodeURIComponent(file.name)}&contenttype=application/octet-stream`,
+  //     { headers: { 'x-api-key': apiKey } }
+  //   );
+  //   const { presignedUrl, url: uploadedFileUrl } = getUrlResponse.data;
 
-    await axios.put(presignedUrl, file, {
-      headers: { 'Content-Type': 'application/octet-stream' }
-    });
+  //   await axios.put(presignedUrl, file, {
+  //     headers: { 'Content-Type': 'application/octet-stream' }
+  //   });
 
-    const extractResponse = await axios.post(
-      'https://api.pdf.co/v1/pdf/convert/to/text',
-      { name: file.name, password: '', pages: '', url: uploadedFileUrl },
-      { headers: { 'x-api-key': apiKey, 'Content-Type': 'application/json' } }
-    );
-    const textFileUrl = extractResponse.data.url;
-    const textFileResponse = await axios.get(textFileUrl);
-    return textFileResponse.data;
-  } catch (err) {
-    console.error('PDF Extraction Error:', err.response ? err.response.data : err.message);
-    throw new Error('Failed to process PDF.');
-  }
+  //   const extractResponse = await axios.post(
+  //     'https://api.pdf.co/v1/pdf/convert/to/text',
+  //     { name: file.name, password: '', pages: '', url: uploadedFileUrl },
+  //     { headers: { 'x-api-key': apiKey, 'Content-Type': 'application/json' } }
+  //   );
+  //   const textFileUrl = extractResponse.data.url;
+  //   const textFileResponse = await axios.get(textFileUrl);
+  //   return textFileResponse.data;
+  // } catch (err) {
+  //   console.error('PDF Extraction Error:', err.response ? err.response.data : err.message);
+  //   throw new Error('Failed to process PDF.');
+  // }
 }
 
 async function submitMasterAndCredits() {
@@ -147,7 +148,7 @@ Your response should be structured in the following way:
    - Clearly list the required credit points and subject distribution for "${selectedCourse.value}"
 
 4. Course Recommendations: 
-   - Recommend modules from this list to fulfill missing credits:
+   - Recommend technical modules from this list to fulfill missing credits:
      "${module}"
    - For each recommendation, indicate whether it belongs to:
      - Ingenieurwissenschaften
@@ -213,6 +214,39 @@ function resetAnalysis() {
   chatActive.value = false;
   chatHistory.value = [];
 }
+
+
+
+async function sendEmail() {
+  if (!userEmail.value || !analysis.value) {
+    error.value = 'Please enter a valid email.';
+    return;
+  }
+
+  emailLoading.value = true; // Start loading
+
+  try {
+    const result = await emailjs.send(
+      import.meta.env.VITE_EMAILJS_SERVICE_ID,
+      import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+      {
+        to_email: userEmail.value,
+        message: analysis.value,
+      },
+      import.meta.env.VITE_EMAILJS_KEY
+    );
+
+    console.log('Email sent!', result.status);
+    emailSent.value = true;
+  } catch (err) {
+    console.error('Email sending failed:', err);
+    error.value = 'Failed to send email. Try again later.';
+  } finally {
+    emailLoading.value = false; // Stop loading
+  }
+}
+
+
 </script>
 
 <template>
@@ -364,6 +398,32 @@ function resetAnalysis() {
             <h3 style="color: #2c5282; font-size: 16px; margin-top: 0; margin-bottom: 10px;">Eligibility Assessment</h3>
             <p style="color: #4a5568; white-space: pre-wrap; margin: 0; line-height: 1.6;">{{ analysis }}</p>
           </div>
+
+          <!-- Email input and send button -->
+<div style="margin-top: 20px;">
+  <h3 style="color: #2c5282;">Would you like to receive this analysis by email?</h3>
+
+  <input
+    v-model="userEmail"
+    type="email"
+    placeholder="Enter your email"
+    style="margin-top: 10px; padding: 8px; border-radius: 6px; border: 1px solid #ccc; width: 100%;"
+    :disabled="emailLoading || emailSent"
+  />
+
+  <button
+    @click="sendEmail"
+    :disabled="emailLoading || emailSent"
+    style="margin-top: 10px; padding: 10px 20px; background-color: #3182ce; color: white; border: none; border-radius: 6px; cursor: pointer;"
+  >
+    <span v-if="emailLoading">Sending... 🌐</span>
+    <span v-else-if="emailSent">Email Sent ✅</span>
+    <span v-else>Send Result by Email</span>
+  </button>
+
+  <p v-if="error" style="color: red; margin-top: 5px;">{{ error }}</p>
+</div>
+
 
           <div v-if="chatActive" style="margin-top: 30px;">
             <div style="display: flex; align-items: center; margin-bottom: 15px;">
