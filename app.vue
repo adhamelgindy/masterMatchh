@@ -149,9 +149,6 @@ Hello "first name of the student", here the analysis for your "Bachelor Studieng
    - Recommend technical modules from this list to fulfill missing credits: "${moduleStr}"
    - For each module, indicate whether it belongs to: Ingenieurwissenschaften, Betriebswirtschaften, Bautechnisch
    - example: "Module Name (Ingenieurwissenschaften, 6 CPs)"
-
-   4.End your message with a short motivational like: 
-   - "You're so close, you've got this... and hey, I love you. ❤️"
 `;
 
   try {
@@ -349,11 +346,7 @@ async function sendEmail() {
 </div>
 
 
-        <!-- Only show credits input if hasTotalCredits is false -->
-        <div v-if="!hasTotalCredits" style="margin-bottom: 20px; text-align: left;">
-           <div style="background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 12px; border-radius: 8px; margin-bottom: 12px; color: #2c5282; font-size: 14px;">
-    💡 You can find the number of credits you have earned in your study documentation. If you have completed your Bachelor's degree, you have received 30 credits per semester.
-  </div>
+       
           <label style="display: block; margin-bottom: 8px; color: #4a5568; font-size: 14px; font-weight: 500;">Your Bachelor Credits:</label>
           <input
             type="number"
@@ -363,6 +356,12 @@ async function sendEmail() {
             max="240"
             style="display: block; width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; background-color: #fff; color: #2d3748; font-size: 14px; outline: none; transition: border-color 0.2s ease;"
           />
+
+           <!-- Only show credits input if hasTotalCredits is false -->
+        <div v-if="!hasTotalCredits" style="margin-bottom: 20px; text-align: left;">
+           <div style="background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 12px; border-radius: 8px; margin-bottom: 12px; color: #2c5282; font-size: 14px;">
+    💡 You can find the number of credits you have earned in your study documentation. If you have completed your Bachelor's degree, you have received 30 credits per semester.
+  </div>
         </div>
 
         <button @click="submitMasterAndCredits" :disabled="loading || !selectedCourse"
