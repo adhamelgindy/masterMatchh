@@ -23,6 +23,7 @@ const selectedCity = ref('');
 const userEmail = ref('');
 const emailSent = ref(false);
 const emailLoading = ref(false);
+const selectedLanguage = ref('en'); 
 
 
 
@@ -141,14 +142,16 @@ Here are the admission requirements for all available master courses: "${zulassu
 Match the student's bachelor course from the following list: "${bachelorsStr}"
 Please analyze and compare the student's bachelor content with the requirements of the selected master course.
 
-Your response should be structured in the following way:
+Your response should be in this language: ${selectedLanguage.value === 'de' ? 'German' : 'English'}**, and follow this format:
 Hello "first name of the student", here the analysis for your "Bachelor Studiengang":
-1. Total Credit Points missing = ... 
+1. Total Credit Points missing = 210 - ${creditInfo} (*number*)
 2. Master Course Requirements listed clearly for the "${selectedCourse.value}"
 3. Course Recommendations: 
    - For every 5 missing credit points, recommend one suitable module from this list: "${moduleStr}"
    - For each module, indicate whether it belongs to: Ingenieurwissenschaften, Betriebswirtschaften, Bautechnisch
    - example: "Module Name (Ingenieurwissenschaften, 6 CPs)"
+
+Good luck!MasterMatch.
 `;
 
   try {
@@ -249,7 +252,7 @@ async function sendEmail() {
 
 <template>
   <div style="max-width: 600px; margin: 50px auto; padding: 30px; border-radius: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); background: linear-gradient(135deg, #f0f8ff, #e6f2ff); font-family: 'Segoe UI', Arial, sans-serif; text-align: center;">
-    <img src="/logoMM.png" alt="logo" style="width: 10rem; margin-bottom: 20px; border-radius: 10%;" />
+   
     <!-- Header -->
     <div style="margin-bottom: 25px;">
       <h1 style="color: #2c5282; font-size: 24px; margin-bottom: 5px;">Course Credit Analysis Tool</h1>
@@ -272,12 +275,7 @@ async function sendEmail() {
     <div v-if="step === 1" style="transition: all 0.3s ease;">
       <div style="background-color: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
         <div style="margin-bottom: 20px;">
-          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#3182ce" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-            <polyline points="14 2 14 8 20 8"></polyline>
-            <line x1="12" y1="18" x2="12" y2="12"></line>
-            <line x1="9" y1="15" x2="15" y2="15"></line>
-          </svg>
+           <img src="/logoMM.png" alt="logo" style="width: 10rem; margin-bottom: 20px; border-radius: 10%;" />
         </div>
         <h2 style="margin-bottom: 15px; color: #2c5282; font-size: 18px;">Upload Your Course Notes</h2>
         
@@ -356,13 +354,27 @@ async function sendEmail() {
             max="240"
             style="display: block; width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; background-color: #fff; color: #2d3748; font-size: 14px; outline: none; transition: border-color 0.2s ease;"
           />
-
+<br/>
            <!-- Only show credits input if hasTotalCredits is false -->
         <div v-if="!hasTotalCredits" style="margin-bottom: 20px; text-align: left;">
            <div style="background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 12px; border-radius: 8px; margin-bottom: 12px; color: #2c5282; font-size: 14px;">
     💡 You can find the number of credits you have earned in your study documentation. If you have completed your Bachelor's degree, you have received 30 credits per semester.
   </div>
         </div>
+
+
+        <!-- Language Selector -->
+<div style="margin-bottom: 20px; text-align: left;">
+  <label style="display: block; margin-bottom: 8px; color: #4a5568; font-size: 14px; font-weight: 500;">
+    Language / Sprache:
+  </label>
+  <select v-model="selectedLanguage"
+    style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; background-color: #fff; color: #2d3748;">
+    <option value="en">English</option>
+    <option value="de">Deutsch</option>
+  </select>
+</div>
+
 
         <button @click="submitMasterAndCredits" :disabled="loading || !selectedCourse"
           style="width: 100%; padding: 12px; background: linear-gradient(135deg, #3182ce, #63b3ed); border: none; border-radius: 8px; color: white; font-size: 16px; font-weight: 500; cursor: pointer; transition: all 0.3s ease; display: flex; justify-content: center; align-items: center;">
