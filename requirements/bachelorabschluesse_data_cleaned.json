@@ -1,0 +1,637 @@
+[
+  {
+    "Studiengang": "Angewandte Mathematik",
+    "Hochschule": "BHT",
+    "Abschluss": "B_Sc",
+    "Credits": "210"
+  },
+  {
+    "Studiengang": "Architektur",
+    "Hochschule": "BHT",
+    "Abschluss": "B_SC",
+    "Credits": "180"
+  },
+  {
+    "Studiengang": "Architektur",
+    "Hochschule": "BTU Cottbus",
+    "Abschluss": "B_SC",
+    "Credits": "180"
+  },
+  {
+    "Studiengang": "Architektur",
+    "Hochschule": "FH Erfurt",
+    "Abschluss": "B_A"
+  },
+  {
+    "Studiengang": "Architektur",
+    "Hochschule": "TH Würzburg",
+    "Abschluss": "B_Eng",
+    "Credits": "240"
+  },
+  {
+    "Studiengang": "Architektur",
+    "Hochschule": "TU Berlin",
+    "Abschluss": "B_SC",
+    "Credits": "180"
+  },
+  {
+    "Studiengang": "Architektur",
+    "Hochschule": "Uni Kassel",
+    "Abschluss": "B_SC",
+    "Credits": "180"
+  },
+  {
+    "Studiengang": "Architektur",
+    "Hochschule": "Uni Aleppo (Syrien)"
+  },
+  {
+    "Studiengang": "Augenoptik/Optometrie",
+    "Hochschule": "BHT",
+    "Abschluss": "B_Sc",
+    "Credits": "210"
+  },
+  {
+    "Studiengang": "Automatisierungstechnik",
+    "Hochschule": "TH Wildau",
+    "Abschluss": "B_Eng",
+    "Credits": "210"
+  },
+  {
+    "Studiengang": "Bauingenieurwesen",
+    "Hochschule": "Grundsätzlich JA, annehmen"
+  },
+  {
+    "Studiengang": "Bauingenieurwesen",
+    "Hochschule": "BHT",
+    "Abschluss": "B_Eng",
+    "Credits": "210"
+  },
+  {
+    "Studiengang": "Bauingenieurwesen",
+    "Hochschule": "FH Potsdam",
+    "Abschluss": "Dipl_FH",
+    "Credits": "210"
+  },
+  {
+    "Studiengang": "Bauingenieurwesen",
+    "Hochschule": "HS Augsburg",
+    "Abschluss": "B_Eng",
+    "Credits": "210"
+  },
+  {
+    "Studiengang": "Bauingenieurwesen",
+    "Hochschule": "HTW",
+    "Abschluss": "B_Eng",
+    "Credits": "180"
+  },
+  {
+    "Studiengang": "Bauingenieurwesen",
+    "Hochschule": "HWR",
+    "Abschluss": "B_Eng",
+    "Credits": "210"
+  },
+  {
+    "Studiengang": "Bekleidungt Technik und Management",
+    "Hochschule": "HAW Hamburg",
+    "Abschluss": "B_ ENG",
+    "Credits": "210"
+  },
+  {
+    "Studiengang": "Biomedizin (Biomedical Engineering)",
+    "Hochschule": "Dt. Jordan.HS",
+    "Abschluss": "S_SC"
+  },
+  {
+    "Studiengang": "Biotechnologie",
+    "Hochschule": "BHT",
+    "Abschluss": "B_Sc",
+    "Credits": "180"
+  },
+  {
+    "Studiengang": "Brandschutz und Sicherheitstechnik",
+    "Hochschule": "BHT",
+    "Abschluss": "B_Eng",
+    "Credits": "210"
+  },
+  {
+    "Studiengang": "Brau- und Getränketechnologie",
+    "Hochschule": "HS Weihenstephan-Triesdorf",
+    "Abschluss": "B_Eng",
+    "Credits": "210"
+  },
+  {
+    "Studiengang": "Business Administration (BWL)",
+    "Hochschule": "HWR",
+    "Abschluss": "B_A",
+    "Credits": "210"
+  },
+  {
+    "Studiengang": "BWL DW",
+    "Hochschule": "BHT",
+    "Abschluss": "B_SC"
+  },
+  {
+    "Studiengang": "BWL",
+    "Hochschule": "grundsätzlich gilt: NEIN",
+    "Abschluss": "B_SC"
+  },
+  {
+    "Studiengang": "Code & Context",
+    "Hochschule": "TH Köln",
+    "Abschluss": "B_Sc",
+    "Credits": "180"
+  },
+  {
+    "Studiengang": "Computational Engineering and Design",
+    "Hochschule": "BHT",
+    "Abschluss": "B_SC",
+    "Credits": "210"
+  },
+  {
+    "Studiengang": "Digital Media Marketing",
+    "Hochschule": "HS Kaiserslautern",
+    "Abschluss": "B_Sc",
+    "Credits": "180"
+  },
+  {
+    "Studiengang": "Digitale Medien & Print",
+    "Hochschule": "BHT",
+    "Abschluss": "B_Eng",
+    "Credits": "180"
+  },
+  {
+    "Studiengang": "Druck- und Medientechnik",
+    "Hochschule": "BHT",
+    "Abschluss": "B_Eng",
+    "Credits": "180"
+  },
+  {
+    "Studiengang": "Elektromobilität",
+    "Hochschule": "BHT",
+    "Abschluss": "B_Eng",
+    "Credits": "210"
+  },
+  {
+    "Studiengang": "Elektronik und Kommunikationssysteme",
+    "Hochschule": "Beuth",
+    "Abschluss": "B_Eng",
+    "Credits": "210"
+  },
+  {
+    "Studiengang": "Elektrotechnik",
+    "Hochschule": "Grundsätzlich JA, annehmen"
+  },
+  {
+    "Studiengang": "Elektrotechnik-Energeisysteme",
+    "Hochschule": "HS Aalen",
+    "Abschluss": "_Eng",
+    "Credits": "210"
+  },
+  {
+    "Studiengang": "Elektrotechnik",
+    "Hochschule": "BHT",
+    "Abschluss": "B_Eng",
+    "Credits": "210"
+  },
+  {
+    "Studiengang": "Elektrotechnik",
+    "Hochschule": "HTW",
+    "Abschluss": "B_Eng",
+    "Credits": "180"
+  },
+  {
+    "Studiengang": "Elektrotechnik",
+    "Hochschule": "TU Berlin",
+    "Abschluss": "B_SC",
+    "Credits": "180"
+  },
+  {
+    "Studiengang": "Energie- und Umwelttechnik",
+    "Hochschule": "BA Sachsen",
+    "Abschluss": "B_Eng",
+    "Credits": "180"
+  },
+  {
+    "Studiengang": "Erdöl-Ingenieurwesen",
+    "Hochschule": "Sharif Universität für Technologie, Iran"
+  },
+  {
+    "Studiengang": "Facility Management",
+    "Hochschule": "HTW und BHT",
+    "Abschluss": "B_SC",
+    "Credits": "180"
+  },
+  {
+    "Studiengang": "Fahrzeugtechnik",
+    "Hochschule": "HTW",
+    "Abschluss": "B_Sc",
+    "Credits": "180"
+  },
+  {
+    "Studiengang": "Gartenbauliche Phytotechnik",
+    "Hochschule": "BHT",
+    "Abschluss": "B_SC",
+    "Credits": "210"
+  },
+  {
+    "Studiengang": "Gebäude- und Energietechnik",
+    "Hochschule": "BHT",
+    "Abschluss": "B_Eng.",
+    "Credits": "180"
+  },
+  {
+    "Studiengang": "Gebäudeenergie und Gebäudeinformationstechnik",
+    "Hochschule": "HTW",
+    "Abschluss": "B_Eng",
+    "Credits": "210"
+  },
+  {
+    "Studiengang": "Geographie",
+    "Hochschule": "HU Berlin",
+    "Abschluss": "B_Sc",
+    "Credits": "180"
+  },
+  {
+    "Studiengang": "Geoinformation",
+    "Hochschule": "BHT",
+    "Abschluss": "B_Eng",
+    "Credits": "180"
+  },
+  {
+    "Studiengang": "Gesundheitselektronik",
+    "Hochschule": "HTW",
+    "Abschluss": "B_Eng",
+    "Credits": "180"
+  },
+  {
+    "Studiengang": "Green Engineering - Verfahrenstechnik",
+    "Hochschule": "BHT",
+    "Abschluss": "B_Eng",
+    "Credits": "210"
+  },
+  {
+    "Studiengang": "Holztechnik (Wood Science and Technology)",
+    "Hochschule": "HNE Eberswalde",
+    "Abschluss": "B_Eng",
+    "Credits": "210"
+  },
+  {
+    "Studiengang": "Immobilien- und Baumanagement",
+    "Hochschule": "HS Anhalt",
+    "Abschluss": "B_Sc",
+    "Credits": "180"
+  },
+  {
+    "Studiengang": "Industrial Design (Produktdesign)",
+    "Hochschule": "Dalian University or Technology (China)",
+    "Abschluss": "B_Eng",
+    "Credits": "210"
+  },
+  {
+    "Studiengang": "Infrastrukturmanagement",
+    "Hochschule": "HS für Technik Stuttgart",
+    "Abschluss": "B_Eng",
+    "Credits": "210"
+  },
+  {
+    "Studiengang": "International Business",
+    "Hochschule": "Fontys (Niederlande)",
+    "Abschluss": "B_SC"
+  },
+  {
+    "Studiengang": "International Communication",
+    "Hochschule": "Taras-Schewtschneko-Universität Kyjiw"
+  },
+  {
+    "Studiengang": "International Fashion Retail",
+    "Hochschule": "HS Reutlingen",
+    "Abschluss": "B_Sc",
+    "Credits": "240"
+  },
+  {
+    "Studiengang": "International Management / Business Administration",
+    "Hochschule": "HS Karlsruhe",
+    "Abschluss": "B_SC",
+    "Credits": "240"
+  },
+  {
+    "Studiengang": "Internationale Betriebswitschaftslehre",
+    "Hochschule": "Europa Universität Viandrina Frankfurt (Oder)",
+    "Abschluss": "B_SC",
+    "Credits": "180"
+  },
+  {
+    "Studiengang": "Internationale Energeiwirtschaft",
+    "Hochschule": "TU Ulm",
+    "Abschluss": "B_SC",
+    "Credits": "210"
+  },
+  {
+    "Studiengang": "Konstruktion und Fertigung",
+    "Hochschule": "HWR",
+    "Abschluss": "B_Eng",
+    "Credits": "210"
+  },
+  {
+    "Studiengang": "Landschaftsarchitektur",
+    "Hochschule": "BHT",
+    "Abschluss": "B_Eng",
+    "Credits": "210"
+  },
+  {
+    "Studiengang": "Lebensmittelchemie",
+    "Hochschule": "KIT",
+    "Abschluss": "B Lebensmittelchemie",
+    "Credits": "180"
+  },
+  {
+    "Studiengang": "Lebensmitteltechnologie",
+    "Hochschule": "BHT",
+    "Abschluss": "B_SC",
+    "Credits": "210"
+  },
+  {
+    "Studiengang": "Life Science Engineering",
+    "Hochschule": "HTW",
+    "Abschluss": "B_Sc",
+    "Credits": "180"
+  },
+  {
+    "Studiengang": "Maschinenbau",
+    "Hochschule": "Grundsätzlich JA, annehmen"
+  },
+  {
+    "Studiengang": "Maschinenbau",
+    "Hochschule": "Berufsakademie Sachsen",
+    "Abschluss": "B_Eng",
+    "Credits": "180"
+  },
+  {
+    "Studiengang": "Maschinenbau",
+    "Hochschule": "BHT",
+    "Abschluss": "B_Eng",
+    "Credits": "210"
+  },
+  {
+    "Studiengang": "Maschinenbau (Konstruktion und Entwicklung)",
+    "Hochschule": "DHBW",
+    "Abschluss": "B_Eng",
+    "Credits": "210"
+  },
+  {
+    "Studiengang": "Maschinenbau",
+    "Hochschule": "HTW",
+    "Abschluss": "B_SC",
+    "Credits": "180"
+  },
+  {
+    "Studiengang": "Mechatronik",
+    "Hochschule": "BHT",
+    "Abschluss": "B_Eng",
+    "Credits": "210"
+  },
+  {
+    "Studiengang": "Medien und Informationswesen",
+    "Hochschule": "HS Offenburg",
+    "Credits": "210"
+  },
+  {
+    "Studiengang": "Medieninformatik",
+    "Hochschule": "BHT",
+    "Abschluss": "B_SC",
+    "Credits": "180"
+  },
+  {
+    "Studiengang": "Medientechnik",
+    "Hochschule": "Grundsätzlich JA, annehmen"
+  },
+  {
+    "Studiengang": "Medientechnik",
+    "Hochschule": "TU Berlin",
+    "Abschluss": "B_SC",
+    "Credits": "180"
+  },
+  {
+    "Studiengang": "Medientechnik",
+    "Hochschule": "TH Deggendorf",
+    "Abschluss": "B_ Eng",
+    "Credits": "210"
+  },
+  {
+    "Studiengang": "Medizininformatik",
+    "Hochschule": "TH Brandenburg",
+    "Abschluss": "B_SC",
+    "Credits": "180"
+  },
+  {
+    "Studiengang": "Medizinphysik",
+    "Hochschule": "BHT",
+    "Abschluss": "B_Eng",
+    "Credits": "180"
+  },
+  {
+    "Studiengang": "Medizintechnik",
+    "Hochschule": "HS Koblenz",
+    "Abschluss": "B_SC",
+    "Credits": "180"
+  },
+  {
+    "Studiengang": "Nachhaltige Ökonomie und Management",
+    "Hochschule": "HNE Eberswalde",
+    "Abschluss": "B_A",
+    "Credits": "180"
+  },
+  {
+    "Studiengang": "Pharmatechnik / Pharmaceutical Engineering",
+    "Hochschule": "TH Ostwestfalen-Lippe",
+    "Abschluss": "B_SC",
+    "Credits": "180"
+  },
+  {
+    "Studiengang": "Pharmaceutical Engineering & Technology",
+    "Hochschule": "GIU (German international university)",
+    "Abschluss": "B_Eng",
+    "Credits": "240"
+  },
+  {
+    "Studiengang": "Physik ",
+    "Hochschule": "LMU",
+    "Abschluss": "B_Sc",
+    "Credits": "180"
+  },
+  {
+    "Studiengang": "Physikalische Technik (siehe Medizinphysik)",
+    "Hochschule": "BHT",
+    "Abschluss": "B_Eng",
+    "Credits": "180"
+  },
+  {
+    "Studiengang": "Produktion und Logistik",
+    "Hochschule": "TH Köln",
+    "Abschluss": "B_A"
+  },
+  {
+    "Studiengang": "Psychologie",
+    "Hochschule": "Uni Podsdamm"
+  },
+  {
+    "Studiengang": "Public und Nonprofit Management",
+    "Hochschule": "HTW",
+    "Abschluss": "B_A",
+    "Credits": "180"
+  },
+  {
+    "Studiengang": "Technische Informatik- Embedded Systems",
+    "Hochschule": "BHT",
+    "Abschluss": "B_Eng",
+    "Credits": "210"
+  },
+  {
+    "Studiengang": "Technisches Facility Management",
+    "Hochschule": "HWR",
+    "Abschluss": "B_ENG",
+    "Credits": "210"
+  },
+  {
+    "Studiengang": "Tourismus und Eventmanagement",
+    "Hochschule": "bbw",
+    "Abschluss": "B_A",
+    "Credits": "180"
+  },
+  {
+    "Studiengang": "Umweltingenieurwesen - Bau",
+    "Hochschule": "BHT",
+    "Abschluss": "B_Eng",
+    "Credits": "210"
+  },
+  {
+    "Studiengang": "Unternehmensmanagement",
+    "Hochschule": "HS für Nachhaltige Entwicklung Eberswalde",
+    "Abschluss": "B_A",
+    "Credits": "180"
+  },
+  {
+    "Studiengang": "Verwaltungsinformatik",
+    "Hochschule": "HWR",
+    "Abschluss": "B_A",
+    "Credits": "210"
+  },
+  {
+    "Studiengang": "Verpackungstechnik",
+    "Hochschule": "BHT",
+    "Abschluss": "B_ENG",
+    "Credits": "210"
+  },
+  {
+    "Studiengang": "Verpackungstechnik, Umwelt und Design",
+    "Hochschule": "BHT",
+    "Abschluss": "B_ENG",
+    "Credits": "210"
+  },
+  {
+    "Studiengang": "Wirtschaftsinformatik",
+    "Hochschule": "HWR",
+    "Abschluss": "B_SC",
+    "Credits": "210"
+  },
+  {
+    "Studiengang": "Wirtschaftsinformatik",
+    "Hochschule": "HWR Dual",
+    "Abschluss": "B_SC",
+    "Credits": "210"
+  },
+  {
+    "Studiengang": "Wirtschaftsinformatik",
+    "Hochschule": "Uni Potsdam",
+    "Abschluss": "B_SC",
+    "Credits": "180"
+  },
+  {
+    "Studiengang": "Wirtschaftsinformatik",
+    "Hochschule": "Uni Tirana (Albanien)",
+    "Abschluss": "B_SC",
+    "Credits": "180"
+  },
+  {
+    "Studiengang": "Wirtschaftsingenieurwesen",
+    "Hochschule": "Grundsätzlich JA, annehmen"
+  },
+  {
+    "Studiengang": "Wirtschaftsingenieurwesen",
+    "Hochschule": "DH BW",
+    "Abschluss": "B_Eng",
+    "Credits": "210"
+  },
+  {
+    "Studiengang": "Wirtschaftsingenieurwesen",
+    "Hochschule": "HS Bielefeld",
+    "Abschluss": "B_SC",
+    "Credits": "210"
+  },
+  {
+    "Studiengang": "Wirtschaftsingenieurwesen",
+    "Hochschule": "HTW",
+    "Abschluss": "B_SC",
+    "Credits": "210"
+  },
+  {
+    "Studiengang": "Wirtschaftsingenieurwesen",
+    "Hochschule": "TH Wildau",
+    "Abschluss": "B_Eng",
+    "Credits": "180"
+  },
+  {
+    "Studiengang": "Wirtschaftsingenieurwesen",
+    "Hochschule": "TU Berlin",
+    "Abschluss": "B_SC",
+    "Credits": "180"
+  },
+  {
+    "Studiengang": "Wirtschaftsingenieurwesen/Bau",
+    "Hochschule": "BHT",
+    "Abschluss": "B_Eng",
+    "Credits": "210"
+  },
+  {
+    "Studiengang": "Wirtschaftsingenieurwesen dual",
+    "Hochschule": "THM (Techn. HS. Mittelhessen)",
+    "Abschluss": "B_Eng",
+    "Credits": "210"
+  },
+  {
+    "Studiengang": "Wirtschaftsingenieurwesen - Logistik und Supply Chain Management",
+    "Hochschule": "bbw",
+    "Abschluss": "B_Sc",
+    "Credits": "180"
+  },
+  {
+    "Studiengang": "Wirtschaftsingenieurwesen/Maschinenbau ",
+    "Hochschule": "BHT",
+    "Abschluss": "B_Eng",
+    "Credits": "210"
+  },
+  {
+    "Studiengang": "Wirtschaftsingenieurwesen/Maschinenbau ",
+    "Hochschule": "HS Düsseldoref",
+    "Abschluss": "B_Eng",
+    "Credits": "210"
+  },
+  {
+    "Studiengang": "Wirtschaftsingenieurwesen/Maschinenbau ",
+    "Hochschule": "Uni Paderborn",
+    "Abschluss": "B_SC",
+    "Credits": "180"
+  },
+  {
+    "Studiengang": "Wirtschaftsingenieurwesen Umwelt und Nachhaltigkeit",
+    "Hochschule": "HWR + BHT",
+    "Abschluss": "B_Eng",
+    "Credits": "210"
+  },
+  {
+    "Studiengang": "Workplace und Facility Engineering (ehem. FM)",
+    "Hochschule": "BHT",
+    "Abschluss": "B_SC",
+    "Credits": "180"
+  }
+]

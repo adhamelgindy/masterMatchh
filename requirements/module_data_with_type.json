@@ -1,0 +1,202 @@
+[
+  {
+    "Modul": "Siedlungswasserwirtschaft",
+    "ECTS": "5",
+    "type": ""
+  },
+  {
+    "Modul": "Human Computer Interaction",
+    "ECTS": "5",
+    "type": ""
+  },
+  {
+    "Modul": "Business Intelligence",
+    "ECTS": "5",
+    "type": ""
+  },
+  {
+    "Modul": "WP 01 Grundlagen der Programmierung",
+    "ECTS": "5",
+    "type": ""
+  },
+  {
+    "Modul": "Management Information Systems in Enterprises",
+    "ECTS": "5",
+    "type": ""
+  },
+  {
+    "Modul": "WP 04 Mobile Anwendungen",
+    "ECTS": "5",
+    "type": ""
+  },
+  {
+    "Modul": "WP 05 Vernetzte Produktionskonzepte",
+    "ECTS": "5",
+    "type": ""
+  },
+  {
+    "Modul": "WP 06 Mediendesign",
+    "ECTS": "5",
+    "type": ""
+  },
+  {
+    "Modul": "Digitales Design & Usability",
+    "ECTS": "5",
+    "type": ""
+  },
+  {
+    "Modul": "Integrierte Druckproduktion",
+    "ECTS": "5",
+    "type": ""
+  },
+  {
+    "Modul": "Audiovisuelle Technik",
+    "ECTS": "5",
+    "type": ""
+  },
+  {
+    "Modul": "Naturwissenschaftliche und mathematische Grundlagen I",
+    "ECTS": "5",
+    "type": ""
+  },
+  {
+    "Modul": "Ingenieurwissenschaftliche Grundlagen der Energietechnik I",
+    "ECTS": "5",
+    "type": ""
+  },
+  {
+    "Modul": "CAE Gebäude- und Energietechnik I, Grundlagen",
+    "ECTS": "5",
+    "type": ""
+  },
+  {
+    "Modul": "Baukonstruktion, Wärmeschutz und Brandschutz",
+    "ECTS": "5",
+    "type": ""
+  },
+  {
+    "Modul": "Elektro-, Mess- und Regelungstechnik I",
+    "ECTS": "5",
+    "type": ""
+  },
+  {
+    "Modul": "Heizungstechnik I, Grundlagen und Bedarfsermittlung",
+    "ECTS": "5",
+    "type": ""
+  },
+  {
+    "Modul": "Naturwissenschaftliche und mathematische Grundlagen II,",
+    "ECTS": "5",
+    "type": ""
+  },
+  {
+    "Modul": "Ingenieurwissenschaftliche Grundlagen der Energietechnik II,",
+    "ECTS": "5",
+    "type": ""
+  },
+  {
+    "Modul": "Ingenieurwissenschaftliche Grundlagen der Energietechnik III,",
+    "ECTS": "5",
+    "type": ""
+  },
+  {
+    "Modul": "Raumlufttechnik I, Behaglichkeit und Bedarfsermittlung,",
+    "ECTS": "5",
+    "type": ""
+  },
+  {
+    "Modul": "Kältetechnik und Wärmepumpen",
+    "ECTS": "5",
+    "type": ""
+  },
+  {
+    "Modul": "CAE Gebäude- und Energietechnik II, Anwendung,",
+    "ECTS": "5",
+    "type": ""
+  },
+  {
+    "Modul": "Heizungstechnik II, Auslegung energieeffizienter Systeme,",
+    "ECTS": "5",
+    "type": ""
+  },
+  {
+    "Modul": "Raumlufttechnik II, Auslegung energieeffizienter Systeme,",
+    "ECTS": "5",
+    "type": ""
+  },
+  {
+    "Modul": "Sanitärtechnik II, Planung von Gas- und Wassersystemen,",
+    "ECTS": "5",
+    "type": ""
+  },
+  {
+    "Modul": "Energie- und Umwelttechnik,",
+    "ECTS": "5",
+    "type": ""
+  },
+  {
+    "Modul": "Heizungstechnik III, Planung und Betrieb von Anlagen,",
+    "ECTS": "5",
+    "type": ""
+  },
+  {
+    "Modul": "Kraft-Wärme-Kopplung",
+    "ECTS": "8",
+    "type": ""
+  },
+  {
+    "Modul": "Innovative Verbrennungssysteme für Erdgas,",
+    "ECTS": "5",
+    "type": ""
+  },
+  {
+    "Modul": "WP 01 Gastechnik",
+    "ECTS": "5",
+    "type": ""
+  },
+  {
+    "Modul": "WP 05 Zeichnen und Programmieren mit Microsoft Visio,",
+    "ECTS": "5",
+    "type": ""
+  },
+  {
+    "Modul": "WP 06 CAE-Software in der Gebäude- und Energietechnik,",
+    "ECTS": "5",
+    "type": ""
+  },
+  {
+    "Modul": "WP 07 Regenerative Energien,",
+    "ECTS": "5",
+    "type": ""
+  },
+  {
+    "Modul": "Elektro-, Mess- und Regelungstechnik II,",
+    "ECTS": "9",
+    "type": ""
+  },
+  {
+    "Modul": "Raumlufttechnik III, Planung, Abnahme, Betrieb von Anlagen,",
+    "ECTS": "6",
+    "type": ""
+  },
+  {
+    "Modul": "Sanitärtechnik III, Abwassertechnik,",
+    "ECTS": "7",
+    "type": ""
+  },
+  {
+    "Modul": "WP 09 Einführung in den Brandschutz für Gebäude und Gebäudetechnik",
+    "ECTS": "5",
+    "type": ""
+  },
+  {
+    "Modul": "Energetische Anlagenoptimierung von Raumlufttechnischen Anlagen",
+    "ECTS": "5",
+    "type": ""
+  },
+  {
+    "Modul": "WP 11 Zukünftige Energieversorgung von Gebäuden - Ideen und Utopien,",
+    "ECTS": "5",
+    "type": ""
+  }
+]

@@ -1,8 +1,11 @@
 <script setup>
 import { ref } from 'vue';
 import axios from 'axios';
-import { module, zulassungsdaten, Studiengange, pdfText as myBachelorNote  } from './requirements/Wirtschaftsingenieurwesen_Projektmanagement.js';
+import { zulassungsdaten, Studiengange, pdfText as myBachelorNote  } from './requirements/Wirtschaftsingenieurwesen_Projektmanagement.js';
 import emailjs from '@emailjs/browser';
+import bachelors from './requirements/bachelorabschluesse_data_cleaned.json';
+import module from './requirements/module_data_with_type.json';
+
 
 const pdfFile = ref(null);
 const analysis = ref('');
@@ -51,34 +54,34 @@ async function handleFileUpload(event) {
 
 
 async function extractTextFromPdf(file) {
-  console.log('Extracting text from PDF:', file.name);
-  return myBachelorNote;
+  // console.log('Extracting text from PDF:', file.name);
+  // return myBachelorNote;
   
-  // const apiKey = import.meta.env.VITE_PDF_ANALYZER_API_KEY;
+  const apiKey = import.meta.env.VITE_PDF_ANALYZER_API_KEY;
   
-  // try {
-  //   const getUrlResponse = await axios.get(
-  //     `https://api.pdf.co/v1/file/upload/get-presigned-url?name=${encodeURIComponent(file.name)}&contenttype=application/octet-stream`,
-  //     { headers: { 'x-api-key': apiKey } }
-  //   );
-  //   const { presignedUrl, url: uploadedFileUrl } = getUrlResponse.data;
+  try {
+    const getUrlResponse = await axios.get(
+      `https://api.pdf.co/v1/file/upload/get-presigned-url?name=${encodeURIComponent(file.name)}&contenttype=application/octet-stream`,
+      { headers: { 'x-api-key': apiKey } }
+    );
+    const { presignedUrl, url: uploadedFileUrl } = getUrlResponse.data;
 
-  //   await axios.put(presignedUrl, file, {
-  //     headers: { 'Content-Type': 'application/octet-stream' }
-  //   });
+    await axios.put(presignedUrl, file, {
+      headers: { 'Content-Type': 'application/octet-stream' }
+    });
 
-  //   const extractResponse = await axios.post(
-  //     'https://api.pdf.co/v1/pdf/convert/to/text',
-  //     { name: file.name, password: '', pages: '', url: uploadedFileUrl },
-  //     { headers: { 'x-api-key': apiKey, 'Content-Type': 'application/json' } }
-  //   );
-  //   const textFileUrl = extractResponse.data.url;
-  //   const textFileResponse = await axios.get(textFileUrl);
-  //   return textFileResponse.data;
-  // } catch (err) {
-  //   console.error('PDF Extraction Error:', err.response ? err.response.data : err.message);
-  //   throw new Error('Failed to process PDF.');
-  // }
+    const extractResponse = await axios.post(
+      'https://api.pdf.co/v1/pdf/convert/to/text',
+      { name: file.name, password: '', pages: '', url: uploadedFileUrl },
+      { headers: { 'x-api-key': apiKey, 'Content-Type': 'application/json' } }
+    );
+    const textFileUrl = extractResponse.data.url;
+    const textFileResponse = await axios.get(textFileUrl);
+    return textFileResponse.data;
+  } catch (err) {
+    console.error('PDF Extraction Error:', err.response ? err.response.data : err.message);
+    throw new Error('Failed to process PDF.');
+  }
 }
 
 async function submitMasterAndCredits() {
@@ -117,6 +120,7 @@ if (!selectedCity.value) {
 
 
 async function analyzeRequirements(text) {
+  console.log('Analyzing requirements with text:', text);
   let creditInfo = '';
   if (hasTotalCredits.value) {
     creditInfo = 'The credit points were automatically detected from the PDF.';
@@ -125,60 +129,56 @@ async function analyzeRequirements(text) {
     text += `\n\nTotal Credit Points: ${bachelorCredits.value}`;
   }
 
-    const prompt = `
-You are an academic advisor. A student has submitted the following bachelor course content:
+  // Stringify only if your data is JSON-like
+  const bachelorsStr = typeof bachelors === 'object' ? JSON.stringify(bachelors).slice(0, 2000) : bachelors;
+  const zulassungsdatenStr = typeof zulassungsdaten === 'object' ? JSON.stringify(zulassungsdaten).slice(0, 2000) : zulassungsdaten;
+  const moduleStr = typeof module === 'object' ? JSON.stringify(module).slice(0, 2000) : module;
 
-"${text}"
-
-${creditInfo}
-
+  const prompt = `
+You are an academic advisor. A student has submitted the following bachelor course content: "${text}" and no. of credit points: ${creditInfo} (must be between 180-240 CPs)
 The student wishes to apply for the master course: "${selectedCourse.value}".
 
-Here are the admission requirements for all available master courses:
-"${zulassungsdaten}"
+Here are the admission requirements for all available master courses: "${zulassungsdatenStr}"
 
+Match the student's bachelor course from the following list: "${bachelorsStr}"
 Please analyze and compare the student's bachelor content with the requirements of the selected master course.
 
 Your response should be structured in the following way:
-
-1. Total Credit Points: 
-   - First, verify the total number of credit points (must be between 180-240 CPs)
-#
-2. Master Course Requirements: 
-   - Clearly list the required credit points and subject distribution for "${selectedCourse.value}"
-
+1.Bachelor Studiengang = ...
+2. Total Credit Points missing = ... 
+3. Master Course Requirements listed clearly for the "${selectedCourse.value}"
 4. Course Recommendations: 
-   - Recommend technical modules from this list to fulfill missing credits:
-     "${module}"
-   - For each recommendation, indicate whether it belongs to:
-     - Ingenieurwissenschaften
-     - Betriebswirtschaften
-     - Bautechnisch
-
-Please provide clear, structured advice.
+   - Recommend technical modules from this list to fulfill missing credits: "${moduleStr}"
+   - For each module, indicate whether it belongs to: Ingenieurwissenschaften, Betriebswirtschaften, Bautechnisch
+   - example: "Module Name (Ingenieurwissenschaften, 6 CPs)"
 `;
 
-
-  const response = await axios.post(
-    'https://api.openai.com/v1/chat/completions',
-    {
-      model: 'gpt-3.5-turbo',
-      messages: [{ role: 'user', content: prompt }],
-    },
-    {
-      headers: {
-        'Authorization': `Bearer ${openaiApiKey}`,
-        'Content-Type': 'application/json',
+  try {
+    const response = await axios.post(
+      'https://api.openai.com/v1/chat/completions',
+      {
+        model: 'gpt-3.5-turbo',
+        messages: [{ role: 'user', content: prompt }],
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${openaiApiKey}`,
+          'Content-Type': 'application/json',
+        }
       }
-    }
-  );
+    );
 
-  analysis.value = response.data.choices[0].message.content;
-  chatActive.value = true;
-  chatHistory.value = [
-    { role: 'assistant', content: response.data.choices[0].message.content }
-  ];
+    analysis.value = response.data.choices[0].message.content;
+    chatActive.value = true;
+    chatHistory.value = [
+      { role: 'assistant', content: response.data.choices[0].message.content }
+    ];
+  } catch (error) {
+    console.error('❌ Error during analysis:', error);
+    analysis.value = 'An error occurred while analyzing the requirements. Please try again.';
+  }
 }
+
 
 async function sendMessage() {
   if (!userMessage.value.trim()) return;
@@ -315,7 +315,7 @@ async function sendEmail() {
             <select v-model="selectedCourse"
               style="display: block; width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; background-color: #fff; color: #2d3748; font-size: 14px; appearance: none; outline: none; transition: border-color 0.2s ease;">
               <option disabled value="">Select a Master's program</option>
-              <option value="Berufs- und Technikpädagogik (M.A.) 210KP">Berufs- und Technikpädagogik (M.A.) 210KP</option>
+              <option value="Berufs- und Technikpädagogik (M.A.) 210KP">Berufs- und Technikpädagogik</option>
               <option value="Wirtschaftsingenieurwesen/Bautechnik und -management">Wirtschaftsingenieurwesen/Bautechnik und -management</option>
               <option value="Wirtschaftsingenieurwesen/Maschinenbau">Wirtschaftsingenieurwesen/Maschinenbau</option>
               <option value="Wirtschaftsingenieurwesen/Projektmanagement">Wirtschaftsingenieurwesen/Projektmanagement</option>
@@ -350,6 +350,9 @@ async function sendEmail() {
 
         <!-- Only show credits input if hasTotalCredits is false -->
         <div v-if="!hasTotalCredits" style="margin-bottom: 20px; text-align: left;">
+           <div style="background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 12px; border-radius: 8px; margin-bottom: 12px; color: #2c5282; font-size: 14px;">
+    💡 You can find the number of credits you have earned in your study documentation. If you have completed your Bachelor's degree, you have received 30 credits per semester.
+  </div>
           <label style="display: block; margin-bottom: 8px; color: #4a5568; font-size: 14px; font-weight: 500;">Your Bachelor Credits:</label>
           <input
             type="number"
