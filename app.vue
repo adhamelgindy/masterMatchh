@@ -146,7 +146,7 @@ Hello "first name of the student", here the analysis for your "Bachelor Studieng
 1. Total Credit Points missing = ... 
 2. Master Course Requirements listed clearly for the "${selectedCourse.value}"
 3. Course Recommendations: 
-   - Recommend technical modules from this list to fulfill missing credits: "${moduleStr}"
+   - For every 5 missing credit points, recommend one suitable module from this list: "${moduleStr}"
    - For each module, indicate whether it belongs to: Ingenieurwissenschaften, Betriebswirtschaften, Bautechnisch
    - example: "Module Name (Ingenieurwissenschaften, 6 CPs)"
 `;
