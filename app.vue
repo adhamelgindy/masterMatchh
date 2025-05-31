@@ -120,7 +120,6 @@ if (!selectedCity.value) {
 
 
 async function analyzeRequirements(text) {
-  console.log('Analyzing requirements with text:', text);
   let creditInfo = '';
   if (hasTotalCredits.value) {
     creditInfo = 'The credit points were automatically detected from the PDF.';
@@ -137,20 +136,22 @@ async function analyzeRequirements(text) {
   const prompt = `
 You are an academic advisor. A student has submitted the following bachelor course content: "${text}" and no. of credit points: ${creditInfo} (must be between 180-240 CPs)
 The student wishes to apply for the master course: "${selectedCourse.value}".
-
 Here are the admission requirements for all available master courses: "${zulassungsdatenStr}"
 
 Match the student's bachelor course from the following list: "${bachelorsStr}"
 Please analyze and compare the student's bachelor content with the requirements of the selected master course.
 
 Your response should be structured in the following way:
-1.Bachelor Studiengang = ...
-2. Total Credit Points missing = ... 
-3. Master Course Requirements listed clearly for the "${selectedCourse.value}"
-4. Course Recommendations: 
+Hello "first name of the student", here the analysis for your "Bachelor Studiengang":
+1. Total Credit Points missing = ... 
+2. Master Course Requirements listed clearly for the "${selectedCourse.value}"
+3. Course Recommendations: 
    - Recommend technical modules from this list to fulfill missing credits: "${moduleStr}"
    - For each module, indicate whether it belongs to: Ingenieurwissenschaften, Betriebswirtschaften, Bautechnisch
    - example: "Module Name (Ingenieurwissenschaften, 6 CPs)"
+
+   4.End your message with a short motivational like: 
+   - "You're so close, you've got this... and hey, I love you. ❤️"
 `;
 
   try {
