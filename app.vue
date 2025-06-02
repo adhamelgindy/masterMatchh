@@ -6,7 +6,6 @@ import emailjs from '@emailjs/browser';
 import bachelors from './requirements/bachelorabschluesse_data_cleaned.json';
 import module from './requirements/module_data_with_type.json';
 
-
 const pdfFile = ref(null);
 const analysis = ref('');
 const selectedCourse = ref('');
