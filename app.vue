@@ -134,24 +134,33 @@ async function analyzeRequirements(text) {
   const zulassungsdatenStr = typeof zulassungsdaten === 'object' ? JSON.stringify(zulassungsdaten).slice(0, 2000) : zulassungsdaten;
   const moduleStr = typeof module === 'object' ? JSON.stringify(module).slice(0, 2000) : module;
 
-  const prompt = `
-You are an academic advisor. A student has submitted the following bachelor course content: "${text}" and no. of credit points: ${creditInfo} (must be between 180-240 CPs)
+ const prompt = ` 
+You are an academic advisor. A student has submitted the following bachelor course content: "${text}" and the total number of earned credit points: ${creditInfo} (must be between 180-240 CPs).
 The student wishes to apply for the master course: "${selectedCourse.value}".
-Here are the admission requirements for all available master courses: "${zulassungsdatenStr}"
 
-Match the student's bachelor course from the following list: "${bachelorsStr}"
-Please analyze and compare the student's bachelor content with the requirements of the selected master course.
+Here are the admission requirements for all available master courses: "${zulassungsdatenStr}".
 
-Your response should be in this language: ${selectedLanguage.value === 'de' ? 'German' : 'English'}**, and follow this format:
-Hello "first name of the student", here the analysis for your "Bachelor Studiengang":
-1. Total Credit Points missing = 210 - ${creditInfo} (*number*)
-2. Master Course Requirements listed clearly for the "${selectedCourse.value}"
-3. Course Recommendations: 
-   - For every 5 missing credit points, recommend one suitable module from this list: "${moduleStr}"
-   - For each module, indicate whether it belongs to: Ingenieurwissenschaften, Betriebswirtschaften, Bautechnisch
-   - example: "Module Name (Ingenieurwissenschaften, 6 CPs)"
+The student's bachelor program is: "${bachelorsStr}".
 
-Good luck!MasterMatch.
+Please do the following:
+1. Calculate the missing credit points by subtracting the student's credit points (${creditInfo}) from 210. Show the result as a number.
+2. Clearly list the admission requirements for the selected master course: "${selectedCourse.value}".
+3. Recommend one suitable module for every 5 missing credit points, selected from this list: "${moduleStr}".
+   - For each recommended module, indicate which category it belongs to (Ingenieurwissenschaften, Betriebswirtschaften, Bautechnisch).
+   - Format each module like this: "Module Name (Category, X CPs)".
+
+Your response should be in ${selectedLanguage.value === 'de' ? 'German' : 'English'} and follow this format:
+
+Hello [first name of the student], here is the analysis of your bachelor program:
+1. Total missing credit points = [calculated number]
+2. Admission requirements for "${selectedCourse.value}":
+   - [list requirements clearly]
+3. Recommended modules:
+   - [module 1]
+   - [module 2]
+   - ...
+
+End your message with: "Good luck! MasterMatch."
 `;
 
   try {
