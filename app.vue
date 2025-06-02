@@ -54,8 +54,6 @@ async function handleFileUpload(event) {
 
 
 async function extractTextFromPdf(file) {
-  // console.log('Extracting text from PDF:', file.name);
-  // return myBachelorNote;
   
   const apiKey = import.meta.env.VITE_PDF_ANALYZER_API_KEY;
   
@@ -122,7 +120,9 @@ if (!selectedCity.value) {
 async function analyzeRequirements(text) {
   let creditInfo = '';
   if (hasTotalCredits.value) {
-    creditInfo = 'The credit points were automatically detected from the PDF.';
+    // creditInfo = 'The credit points were automatically detected from the PDF.';
+    // console.log('hasTotalCredits.value:', hasTotalCredits.value);
+    creditInfo = bachelorCredits.value;
   } else {
     creditInfo = `The student has reported ${bachelorCredits.value} credit points.`;
     text += `\n\nTotal Credit Points: ${bachelorCredits.value}`;
@@ -133,8 +133,11 @@ async function analyzeRequirements(text) {
   const zulassungsdatenStr = typeof zulassungsdaten === 'object' ? JSON.stringify(zulassungsdaten).slice(0, 2000) : zulassungsdaten;
   const moduleStr = typeof module === 'object' ? JSON.stringify(module).slice(0, 2000) : module;
 
+  console.log("creditInfo:", creditInfo, "typeof:", typeof creditInfo);
+
   const prompt = ` 
-You are an academic advisor. A student has submitted the following bachelor course content: "${text}" and the total number of earned credit points: ${creditInfo} (must be between 180-240 CPs).
+You are an academic advisor. A student has submitted the following bachelor course content: "${text}" 
+and the total number of earned credit points: ${creditInfo} (must be between 180-240 CPs).
 The student wishes to apply for the master course: "${selectedCourse.value}".
 
 Here are the admission requirements for all available master courses: "${zulassungsdatenStr}".
@@ -142,7 +145,7 @@ Here are the admission requirements for all available master courses: "${zulassu
 The student's bachelor program is: "${bachelorsStr}".
 
 Please do the following:
-1. Calculate the missing credit points by subtracting the student's credit points (${creditInfo}) from 210. Show the result as a number.
+1. Calculate the missing credit points by subtracting the student's credit points (${creditInfo}) from 210 as [missing credits]. Show the result as a number.
 2. Clearly list the admission requirements for the selected master course: "${selectedCourse.value}".
 3. Recommend one suitable module for every 5 missing credit points, selected from this list: "${moduleStr}".
    - For each recommended module, indicate which category it belongs to (Ingenieurwissenschaften, Betriebswirtschaften, Bautechnisch).
@@ -152,7 +155,7 @@ Your response should be in ${selectedLanguage.value === 'de' ? 'German' : 'Engli
 
 **Hello [first name of the student], here is the analysis of your bachelor program:**
 
-**1. Total missing credit points** = [calculated number]
+**1. Total missing credit points** = [missing credits] CPs.
 
 **2. Admission requirements for "${selectedCourse.value}":**
    - [list requirements clearly]
