@@ -244,15 +244,18 @@ async function sendEmail() {
     return;
   }
 
-  emailLoading.value = true; // Start loading
+  emailLoading.value = true;
 
   try {
+    const rawContent = chatHistory.value.find(msg => msg.role === 'assistant')?.content || '';
+    const formattedText = cleanTextResponse(rawContent);
+
     const result = await emailjs.send(
       import.meta.env.VITE_EMAILJS_SERVICE_ID,
       import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
       {
         to_email: userEmail.value,
-        message: analysis.value,
+        message: formattedText,
       },
       import.meta.env.VITE_EMAILJS_KEY
     );
@@ -263,10 +266,19 @@ async function sendEmail() {
     console.error('Email sending failed:', err);
     error.value = 'Failed to send email. Try again later.';
   } finally {
-    emailLoading.value = false; // Stop loading
+    emailLoading.value = false;
   }
 }
 
+
+function cleanTextResponse(text) {
+  return text
+    .replace(/\*\*(.*?)\*\*/g, (_, title) => `${title.trim()}:`) // remove ** and add colon
+    .replace(/^\s*:\s*$/gm, '') // remove standalone colons
+    .replace(/\n{2,}/g, '\n\n') // normalize line spacing
+    .replace(/^- /gm, '• ') // bullet points
+    .trim();
+}
 
 </script>
 
