@@ -134,7 +134,7 @@ async function analyzeRequirements(text) {
   const zulassungsdatenStr = typeof zulassungsdaten === 'object' ? JSON.stringify(zulassungsdaten).slice(0, 2000) : zulassungsdaten;
   const moduleStr = typeof module === 'object' ? JSON.stringify(module).slice(0, 2000) : module;
 
- const prompt = ` 
+  const prompt = ` 
 You are an academic advisor. A student has submitted the following bachelor course content: "${text}" and the total number of earned credit points: ${creditInfo} (must be between 180-240 CPs).
 The student wishes to apply for the master course: "${selectedCourse.value}".
 
@@ -151,16 +151,19 @@ Please do the following:
 
 Your response should be in ${selectedLanguage.value === 'de' ? 'German' : 'English'} and follow this format:
 
-Hello [first name of the student], here is the analysis of your bachelor program:
-1. Total missing credit points = [calculated number]
-2. Admission requirements for "${selectedCourse.value}":
+**Hello [first name of the student], here is the analysis of your bachelor program:**
+
+**1. Total missing credit points** = [calculated number]
+
+**2. Admission requirements for "${selectedCourse.value}":**
    - [list requirements clearly]
-3. Recommended modules:
+
+**3. Recommended modules:**
    - [module 1]
    - [module 2]
    - ...
 
-End your message with: "Good luck! MasterMatch."
+**Good luck! MasterMatch.**
 `;
 
   try {
@@ -178,7 +181,13 @@ End your message with: "Good luck! MasterMatch."
       }
     );
 
-    analysis.value = response.data.choices[0].message.content;
+    // Convert Markdown to HTML for better display
+    const formattedResponse = response.data.choices[0].message.content
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Bold text
+      .replace(/\*(.*?)\*/g, '<em>$1</em>') // Italic text
+      .replace(/\n/g, '<br>'); // Line breaks
+
+    analysis.value = formattedResponse;
     chatActive.value = true;
     chatHistory.value = [
       { role: 'assistant', content: response.data.choices[0].message.content }
@@ -419,9 +428,9 @@ async function sendEmail() {
           </div>
           
           <div style="background-color: #f7fafc; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-            <h3 style="color: #2c5282; font-size: 16px; margin-top: 0; margin-bottom: 10px;">Eligibility Assessment</h3>
-            <p style="color: #4a5568; white-space: pre-wrap; margin: 0; line-height: 1.6;">{{ analysis }}</p>
-          </div>
+  <h3 style="color: #2c5282; font-size: 16px; margin-top: 0; margin-bottom: 10px;">Eligibility Assessment</h3>
+  <p style="color: #4a5568; white-space: pre-wrap; margin: 0; line-height: 1.6;" v-html="analysis"></p>
+</div>
 
           <!-- Email input and send button -->
 <div style="margin-top: 20px;">
