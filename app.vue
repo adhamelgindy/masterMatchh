@@ -147,9 +147,10 @@ The student's bachelor program is: "${bachelorsStr}".
 Please do the following:
 1. Calculate the missing credit points by subtracting the student's credit points (${creditInfo}) from 210 as [missing credits]. Show the result as a number.
 2. Clearly list the admission requirements for the selected master course: "${selectedCourse.value}".
-3. Recommend one suitable module for every 5 missing credit points, selected from this list: "${moduleStr}".
+3. If [missing credits] is greater than 0, recommend one suitable module for every 5 missing credit points, selected from this list: "${moduleStr}".
    - For each recommended module, indicate which category it belongs to (Ingenieurwissenschaften, Betriebswirtschaften, Bautechnisch).
    - Format each module like this: "Module Name (Category, X CPs)".
+   - skip this step if the student has enough credits.
 
 Your response should be in ${selectedLanguage.value === 'de' ? 'German' : 'English'} and follow this format:
 
@@ -160,7 +161,7 @@ Your response should be in ${selectedLanguage.value === 'de' ? 'German' : 'Engli
 **2. Admission requirements for "${selectedCourse.value}":**
    - [list requirements clearly]
 
-**3. Recommended modules:**
+**3. Recommended modules:** 
    - [module 1]
    - [module 2]
    - ...
