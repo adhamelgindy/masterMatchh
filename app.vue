@@ -16,7 +16,7 @@ const chatActive = ref(false);
 const chatHistory = ref([]);
 const step = ref(1); // 1: Upload PDF, 2: Select Master + Credits, 3: Show Results
 const bachelorCredits = ref(0);
-const hasTotalCredits = ref(false); // Initialize as false
+// const hasTotalCredits = ref(false); // Initialize as false
 const pdfText = ref('');
 const selectedCity = ref('');
 const userEmail = ref('');
@@ -40,8 +40,8 @@ async function handleFileUpload(event) {
     pdfText.value = extractedText;
 
     // Check if total credits are in the extracted text
-    const regex = /\b(18[0-9]|19[0-9]|2[0-3][0-9]|240)\b/;
-    hasTotalCredits.value = regex.test(extractedText);
+    // const regex = /\b(18[0-9]|19[0-9]|2[0-3][0-9]|240)\b/;
+    // hasTotalCredits.value = regex.test(extractedText);
 
     step.value = 2; // Go to master + credits input step
   } catch (err) {
@@ -88,11 +88,6 @@ async function submitMasterAndCredits() {
     return;
   }
 
-if (!selectedCity.value) {
-  error.value = 'Please select the city where you completed your bachelor’s degree.';
-  loading.value = false;
-  return;
-}
   loading.value = true;
   error.value = '';
 
@@ -100,7 +95,7 @@ if (!selectedCity.value) {
     const text = pdfText.value; // Use already extracted text
 
     // Validate credits if not detected
-    if (!hasTotalCredits.value && bachelorCredits.value === 0) {
+    if (bachelorCredits.value === 0) {
       error.value = 'Please enter your total bachelor credits.';
       loading.value = false;
       return;
@@ -118,22 +113,24 @@ if (!selectedCity.value) {
 
 
 async function analyzeRequirements(text) {
-  let creditInfo = '';
-  if (hasTotalCredits.value) {
-    // creditInfo = 'The credit points were automatically detected from the PDF.';
-    // console.log('hasTotalCredits.value:', hasTotalCredits.value);
-    creditInfo = bachelorCredits.value;
-  } else {
-    creditInfo = `The student has reported ${bachelorCredits.value} credit points.`;
-    text += `\n\nTotal Credit Points: ${bachelorCredits.value}`;
-  }
+  const creditInfo = bachelorCredits.value;
+  text += `\n\nTotal Credit Points: ${creditInfo}`;
+  // let creditInfo = '';
+  // if (hasTotalCredits.value) {
+  //   // creditInfo = 'The credit points were automatically detected from the PDF.';
+  //   // console.log('hasTotalCredits.value:', hasTotalCredits.value);
+  //   creditInfo = bachelorCredits.value;
+  // } else {
+  //   creditInfo = `The student has reported ${bachelorCredits.value} credit points.`;
+  //   text += `\n\nTotal Credit Points: ${bachelorCredits.value}`;
+  // }
 
   // Stringify only if your data is JSON-like
   const bachelorsStr = typeof bachelors === 'object' ? JSON.stringify(bachelors).slice(0, 2000) : bachelors;
   const zulassungsdatenStr = typeof zulassungsdaten === 'object' ? JSON.stringify(zulassungsdaten).slice(0, 2000) : zulassungsdaten;
   const moduleStr = typeof module === 'object' ? JSON.stringify(module).slice(0, 2000) : module;
 
-  console.log("creditInfo:", creditInfo, "typeof:", typeof creditInfo);
+  console.log("creditInfo:", creditInfo, "typeof:", typeof creditInfo, "bachelorCredits:", bachelorCredits.value, "typeof:", typeof bachelorCredits.value);
 
   const prompt = ` 
 You are an academic advisor. A student has submitted the following bachelor course content: "${text}" 
@@ -148,15 +145,19 @@ Please do the following:
 1. Calculate the missing credit points by subtracting the student's credit points (${creditInfo}) from 210 as [missing credits]. Show the result as a number.
 2. Clearly list the admission requirements for the selected master course: "${selectedCourse.value}".
 3. If [missing credits] is greater than 0, recommend one suitable module for every 5 missing credit points, selected from this list: "${moduleStr}".
+   - Skip this step entirely if the student has 210 or more credit points.
    - For each recommended module, indicate which category it belongs to (Ingenieurwissenschaften, Betriebswirtschaften, Bautechnisch).
    - Format each module like this: "Module Name (Category, X CPs)".
-   - skip this step if the student has enough credits.
+   
 
 Your response should be in ${selectedLanguage.value === 'de' ? 'German' : 'English'} and follow this format:
 
 **Hello [first name of the student], here is the analysis of your bachelor program:**
+you reported a total of ${bachelorCredits.value} credit points.
 
-**1. Total missing credit points** = [missing credits] CPs.
+**1. Total missing credit points** = 210 - ${creditInfo} = [missing credits] CPs  
+(If the result is negative, it is shown as 0)
+
 
 **2. Admission requirements for "${selectedCourse.value}":**
    - [list requirements clearly]
@@ -356,27 +357,6 @@ function cleanTextResponse(text) {
             </div>
           </div>
         </div>
-
-        <!-- Select German City of Bachelor Degree -->
-<div style="margin-bottom: 20px; text-align: left;">
-  <label for="city" style="display: block; margin-bottom: 5px; color: #2c5282; font-weight: 500;">German City of Your Bachelor's Degree</label>
-  <select id="city" v-model="selectedCity" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #cbd5e0;">
-    <option value="" disabled>Select a city</option>
-    <option>Berlin</option>
-    <option>Hamburg</option>
-    <option>Munich</option>
-    <option>Frankfurt</option>
-    <option>Cologne</option>
-    <option>Stuttgart</option>
-    <option>Dresden</option>
-    <option>Leipzig</option>
-    <option>Hannover</option>
-    <option>Düsseldorf</option>
-    <!-- Add more as needed -->
-  </select>
-</div>
-
-
        
           <label style="display: block; margin-bottom: 8px; color: #4a5568; font-size: 14px; font-weight: 500;">Your Bachelor Credits:</label>
           <input
