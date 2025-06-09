@@ -56,7 +56,7 @@ async function handleFileUpload(event) {
     }, 0);
 
     if (matchCount < 1) {
-      error.value = 'The uploaded document does not appear to be a valid transcript. Please upload the correct file.';
+      error.value = 'The uploaded document does not appear to be a valid grade report. Please upload the correct file.';
       return;
     }
 
@@ -67,7 +67,7 @@ async function handleFileUpload(event) {
     step.value = 2; // Proceed to next step
   } catch (err) {
     console.error(err);
-    error.value = 'We couldn’t extract text from your PDF. Please try a higher-quality file or ensure it’s not scanned as an image.';
+    error.value = 'We couldn’t extract text from your PDF. This might be due to a server issue or a low-quality/scanned file. Please try again or upload a higher-quality PDF.';
   } finally {
     loading.value = false;
   }
