@@ -56,7 +56,7 @@ async function handleFileUpload(event) {
       return regex.test(extractedText) ? count + 1 : count;
     }, 0);
 
-    if (matchCount < 3) {
+    if (matchCount < 1) {
       error.value = 'The uploaded document does not appear to be a valid transcript. Please upload the correct file.';
       return;
     }
@@ -68,7 +68,7 @@ async function handleFileUpload(event) {
     step.value = 2; // Proceed to next step
   } catch (err) {
     console.error(err);
-    error.value = 'Failed to extract text from the PDF. Please try another file.';
+    error.value = 'We couldn’t extract text from your PDF. Please try a higher-quality file or ensure it’s not scanned as an image.';
   } finally {
     loading.value = false;
   }
