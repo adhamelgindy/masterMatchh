@@ -35,15 +35,37 @@ async function handleFileUpload(event) {
   try {
     loading.value = true;
     const extractedText = await extractTextFromPdf(pdfFile.value);
-
-    // Save the extracted text for later analysis
     pdfText.value = extractedText;
 
-    // Check if total credits are in the extracted text
+    // Check for presence of relevant academic keywords
+    const keywords = [
+      "Module",
+      "Modules",
+      "Note",
+      "Grade",
+      "ECTS-Punkte",
+      "Credit-Points",
+      "Studiengang",
+      "Studium",
+      "Study",
+      "Student"
+    ];
+
+    const matchCount = keywords.reduce((count, keyword) => {
+      const regex = new RegExp(`\\b${keyword}\\b`, 'i'); // Case-insensitive whole-word match
+      return regex.test(extractedText) ? count + 1 : count;
+    }, 0);
+
+    if (matchCount < 3) {
+      error.value = 'The uploaded document does not appear to be a valid transcript. Please upload the correct file.';
+      return;
+    }
+
+    // Optional: check for total credits
     // const regex = /\b(18[0-9]|19[0-9]|2[0-3][0-9]|240)\b/;
     // hasTotalCredits.value = regex.test(extractedText);
 
-    step.value = 2; // Go to master + credits input step
+    step.value = 2; // Proceed to next step
   } catch (err) {
     console.error(err);
     error.value = 'Failed to extract text from the PDF. Please try another file.';
