@@ -5,6 +5,8 @@ import { zulassungsdaten, Studiengange, pdfText as myBachelorNote  } from './req
 import emailjs from '@emailjs/browser';
 import bachelors from './requirements/bachelorabschluesse_data_cleaned.json';
 import module from './requirements/module_data_with_type.json';
+import { Conversation } from '@elevenlabs/client';
+
 
 const pdfFile = ref(null);
 const analysis = ref('');
@@ -22,6 +24,8 @@ const userEmail = ref('');
 const emailSent = ref(false);
 const emailLoading = ref(false);
 const selectedLanguage = ref('en'); 
+const voiceActive = ref(false);
+let currentSession = null;
 
 
 
@@ -217,6 +221,7 @@ you reported a total of ${bachelorCredits.value} credit points.
     chatHistory.value = [
       { role: 'assistant', content: response.data.choices[0].message.content }
     ];
+    await startVoiceConversation();
   } catch (error) {
     console.error('❌ Error during analysis:', error);
     analysis.value = 'An error occurred while analyzing the requirements. Please try again.';
@@ -301,6 +306,31 @@ function cleanTextResponse(text) {
     .replace(/\n{2,}/g, '\n\n') // normalize line spacing
     .replace(/^- /gm, '• ') // bullet points
     .trim();
+}
+
+async function startVoiceConversation() {
+  try {
+    await navigator.mediaDevices.getUserMedia({ audio: true });
+
+    await Conversation.startSession({
+      agentId: 'yNUAu9b1ZHb89mA9Ho5T', // 🔁 Replace this with your actual agent ID
+
+      dynamicVariables: {
+        new_variable: analysis.value || 'No analysis available.'
+      },
+
+      onMessage: (msg) => {
+        console.log('🎤 ElevenLabs Agent:', msg);
+      },
+
+      onError: (err) => {
+        console.error('ElevenLabs error:', err);
+      }
+    });
+  } catch (err) {
+    console.error('Failed to start ElevenLabs voice session:', err);
+    error.value = 'Voice chat failed to start. Check microphone permissions.';
+  }
 }
 
 </script>
@@ -450,6 +480,7 @@ function cleanTextResponse(text) {
 
           <!-- Email input and send button -->
 <div style="margin-top: 20px;">
+  <!-- <button @click="startVoiceConversation">Start Voice Chat</button> -->
   <h3 style="color: #2c5282;">Would you like to receive this analysis by email?</h3>
 
   <input
