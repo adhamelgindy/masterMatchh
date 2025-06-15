@@ -314,7 +314,7 @@ async function startVoiceConversation() {
     await navigator.mediaDevices.getUserMedia({ audio: true });
 
     await Conversation.startSession({
-      agentId: 'yNUAu9b1ZHb89mA9Ho5T', // 🔁 Replace this with your actual agent ID
+      agentId: 'agent_01jxt8qh1yevcsk5t81p6ayqwc', // 🔁 Replace this with your actual agent ID
 
       dynamicVariables: {
         new_variable: analysis.value || 'No analysis available.'
