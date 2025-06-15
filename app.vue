@@ -81,6 +81,7 @@ async function handleFileUpload(event) {
 async function extractTextFromPdf(file) {
   
   const apiKey = import.meta.env.VITE_PDF_ANALYZER_API_KEY;
+  console.log('Extracting text from PDF using API key:', apiKey);
   
   try {
     const getUrlResponse = await axios.get(
