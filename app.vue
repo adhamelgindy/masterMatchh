@@ -79,6 +79,8 @@ async function handleFileUpload(event) {
 
 
 async function extractTextFromPdf(file) {
+
+  // return myBachelorNote;
   
   const apiKey = import.meta.env.VITE_PDF_ANALYZER_API_KEY;
   console.log('Extracting text from PDF using API key:', apiKey);
@@ -159,7 +161,7 @@ async function analyzeRequirements(text) {
   console.log("creditInfo:", creditInfo, "typeof:", typeof creditInfo, "bachelorCredits:", bachelorCredits.value, "typeof:", typeof bachelorCredits.value);
 
   const prompt = ` 
-You are an academic advisor. A student has submitted the following bachelor course content: "${text}" 
+You are an academic advisor for BHT (Berliner Hochschule für Technik). A student has submitted the following bachelor course content: "${text}" 
 and the total number of earned credit points: ${creditInfo} (must be between 180-240 CPs).
 The student wishes to apply for the master course: "${selectedCourse.value}".
 
@@ -193,6 +195,7 @@ you reported a total of ${bachelorCredits.value} credit points.
    - [module 2]
    - ...
 
+For further information, please refer to the official BHT website: https://www.bht-berlin.de  
 **Good luck! MasterMatch.**
 `;
 
