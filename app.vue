@@ -358,11 +358,10 @@ async function startVoiceConversation() {
     <!-- Step 1: PDF Upload -->
     <div v-if="step === 1" style="transition: all 0.3s ease;">
       <div style="background-color: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
-        <div style="margin-bottom: 20px;">
+        <div style="margin-bottom: 10px;">
            <img src="/logoMM.png" alt="logo" style="width: 10rem; margin-bottom: 20px; border-radius: 10%;" />
         </div>
-        <h2 style="margin-bottom: 15px; color: #2c5282; font-size: 18px;">Upload Your Course Notes</h2>
-        
+   
         <label for="fileUpload" style="display: block; cursor: pointer; padding: 15px; background: linear-gradient(135deg, #ebf4ff, #bee3f8); border: 1px dashed #3182ce; border-radius: 8px; transition: all 0.3s ease;">
           <span style="color: #2b6cb0; font-weight: 500;">Upload your bachelor's degree certificate</span>
           <input id="fileUpload" type="file" @change="handleFileUpload" accept="application/pdf" :disabled="loading"
