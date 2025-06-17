@@ -79,9 +79,6 @@ async function handleFileUpload(event) {
 
 
 async function extractTextFromPdf(file) {
-
-  // return myBachelorNote;
-  
   const apiKey = import.meta.env.VITE_PDF_ANALYZER_API_KEY;
   console.log('Extracting text from PDF using API key:', apiKey);
   
@@ -166,9 +163,7 @@ and the total number of earned credit points: ${creditInfo} (must be between 180
 The student wishes to apply for the master course: "${selectedCourse.value}".
 
 Here are the admission requirements for all available master courses: "${zulassungsdatenStr}".
-
 The student's bachelor program is: "${bachelorsStr}".
-
 Please do the following:
 1. Calculate the missing credit points by subtracting the student's credit points (${creditInfo}) from 210 as [missing credits]. Show the result as a number.
 2. Clearly list the admission requirements for the selected master course: "${selectedCourse.value}".
@@ -369,7 +364,7 @@ async function startVoiceConversation() {
         <h2 style="margin-bottom: 15px; color: #2c5282; font-size: 18px;">Upload Your Course Notes</h2>
         
         <label for="fileUpload" style="display: block; cursor: pointer; padding: 15px; background: linear-gradient(135deg, #ebf4ff, #bee3f8); border: 1px dashed #3182ce; border-radius: 8px; transition: all 0.3s ease;">
-          <span style="color: #2b6cb0; font-weight: 500;">Click to upload PDF here</span>
+          <span style="color: #2b6cb0; font-weight: 500;">Upload your bachelor's degree certificate</span>
           <input id="fileUpload" type="file" @change="handleFileUpload" accept="application/pdf" :disabled="loading"
             style="opacity: 0; position: absolute; z-index: -1;" />
         </label>
